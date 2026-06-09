@@ -1,0 +1,7 @@
+body {
+    font-family: "Source Sans Pro", sans-serif;
+    background: lightgray;
+}
+.card {
+    border-radius: 0.85rem;
+}
