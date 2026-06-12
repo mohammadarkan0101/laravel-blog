@@ -51,8 +51,6 @@ class LoginController extends Controller
             return redirect()->intended(route('home'));
         }
 
-        Auth::logout();
-
         return to_route('login')->with('error', 'Role tidak dikenali.');
     }
 }
