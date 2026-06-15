@@ -12,7 +12,7 @@ return [
     |
     */
 
-    'failed'   => 'Email atau kata sandi yang dimasukkan tidak valid.',
+    'failed'   => 'Email atau password tidak valid.',
     'inactive' => 'Akun telah dinonaktifkan. Silakan hubungi administrator untuk informasi lebih lanjut.',
     'throttle' => 'Terlalu banyak percobaan login. Silakan coba lagi dalam :seconds detik.',
 ];
