@@ -1,24 +1,33 @@
 <!DOCTYPE html>
 <html lang="id" class="scroll-smooth">
 
+<!-- Header -->
 @include('components.partials.admin.header')
 
 <body class="hold-transition">
     <div class="wrapper">
 
-        @include('components.partials.admin.navbar')
-        @include('components.partials.admin.sidebar')
+        <!-- Navbar -->
+        <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+            @include('components.partials.admin.navbar')
+        </nav>
 
-        <div class="content-wrapper">
+        <!-- Sidebar -->
+        <aside class="main-sidebar sidebar-dark-primary elevation-1">
+            @include('components.partials.admin.sidebar')
+        </aside>
+
+        <!-- Main Content -->
+        <main class="content-wrapper">
             {{ $slot }}
-        </div>
+        </main>
 
-        @include('components.partials.admin.footer')
+        <!-- Footer -->
+        <footer class="main-footer">
+            @include('components.partials.admin.footer')
+        </footer>
+
     </div>
-
-    @include('components.partials.admin.script')
-
-    @stack('scripts')
 </body>
 
 </html>
