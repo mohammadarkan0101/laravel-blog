@@ -22,6 +22,10 @@ class Blog extends Model
         'status',
     ];
 
+    protected $casts = [
+        'published_at' => 'datetime',
+    ];
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
