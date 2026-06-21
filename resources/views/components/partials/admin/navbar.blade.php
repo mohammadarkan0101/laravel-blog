@@ -42,8 +42,7 @@
             <div class="dropdown-divider"></div>
 
             <!-- Logout -->
-            <a href="#" class="dropdown-item text-danger"
-               onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+            <a href="#" class="dropdown-item text-danger" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                 <i class="bi bi-box-arrow-right mr-2"></i>
                 Logout
             </a>
