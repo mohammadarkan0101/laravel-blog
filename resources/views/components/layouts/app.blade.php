@@ -6,7 +6,6 @@
 
 <body class="hold-transition">
     <div class="wrapper">
-
         <!-- Navbar -->
         <nav class="main-header navbar navbar-expand navbar-white navbar-light">
             @include('components.partials.admin.navbar')
@@ -26,8 +25,11 @@
         <footer class="main-footer">
             @include('components.partials.admin.footer')
         </footer>
-
     </div>
+
+    @include('components.partials.admin.script')
+
+    @stack('scripts')
 </body>
 
 </html>
