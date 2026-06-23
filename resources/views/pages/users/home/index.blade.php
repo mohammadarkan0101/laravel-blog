@@ -4,11 +4,11 @@
 <head>
     <!-- Charset -->
     <meta charset="utf-8">
-    <!-- Responsive viewport -->
+    <!-- Responsive Viewport -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <!-- Google Fonts -->
+    <!-- Google Fonts: Bunny -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link rel="stylesheet" href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" />
     <!-- Tailwind CSS -->
