@@ -1,48 +1,50 @@
-<!-- Brand Logo -->
-<div class="brand-link d-flex align-items-center">
-    <img src="#" alt="Brand Logo" class="brand-image">
-    <span class="brand-text font-weight-light">AdminLTE 3</span>
-</div>
+<aside class="main-sidebar sidebar-dark-primary elevation-1">
+    <!-- Brand Logo -->
+    <div class="brand-link d-flex align-items-center">
+        <img src="#" alt="Brand Logo" class="brand-image">
+        <span class="brand-text font-weight-light">AdminLTE 3</span>
+    </div>
 
-<!-- Sidebar -->
-<div class="sidebar mt-3">
-    <!-- Sidebar Menu -->
-    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+    <!-- Sidebar -->
+    <div class="sidebar mt-3">
+        <!-- Sidebar Menu -->
+        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
 
-        <!-- Dashboard -->
-        <li class="nav-item">
-            <a href="{{ route('dashboard') }}" class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}">
-                <i class="nav-icon bi bi-speedometer2"></i>
-                <p>Dashboard</p>
-            </a>
-        </li>
-
-        <!-- Profile -->
-        <li class="nav-item">
-            <a href="{{ route('profile.index') }}" class="nav-link {{ request()->routeIs('profile.*') ? 'active' : '' }}">
-                <i class="nav-icon bi bi-person"></i>
-                <p>Profile</p>
-            </a>
-        </li>
-
-        <!-- Data Blogs -->
-        @role('editor')
+            <!-- Dashboard -->
             <li class="nav-item">
-                <a href="{{ route('blogs.index') }}" class="nav-link {{ request()->routeIs('blogs.*') ? 'active' : '' }}">
-                    <i class="nav-icon bi bi-journal-text"></i>
-                    <p>Data Blogs</p>
+                <a href="{{ route('dashboard') }}" class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}">
+                    <i class="nav-icon bi bi-speedometer2"></i>
+                    <p>Dashboard</p>
                 </a>
             </li>
-        @endrole
 
-        <!-- Data Users -->
-        @role('administrator')
+            <!-- Profile -->
             <li class="nav-item">
-                <a href="{{ route('users.index') }}" class="nav-link {{ request()->routeIs('users.*') ? 'active' : '' }}">
-                    <i class="nav-icon bi bi-people"></i>
-                    <p>Data Users</p>
+                <a href="{{ route('profile.index') }}" class="nav-link {{ request()->routeIs('profile.*') ? 'active' : '' }}">
+                    <i class="nav-icon bi bi-person"></i>
+                    <p>Profile</p>
                 </a>
             </li>
-        @endrole
-    </ul>
-</div>
+
+            <!-- Data Blogs -->
+            @role('editor')
+                <li class="nav-item">
+                    <a href="{{ route('blogs.index') }}" class="nav-link {{ request()->routeIs('blogs.*') ? 'active' : '' }}">
+                        <i class="nav-icon bi bi-journal-text"></i>
+                        <p>Data Blogs</p>
+                    </a>
+                </li>
+            @endrole
+
+            <!-- Data Users -->
+            @role('administrator')
+                <li class="nav-item">
+                    <a href="{{ route('users.index') }}" class="nav-link {{ request()->routeIs('users.*') ? 'active' : '' }}">
+                        <i class="nav-icon bi bi-people"></i>
+                        <p>Data Users</p>
+                    </a>
+                </li>
+            @endrole
+        </ul>
+    </div>
+</aside>

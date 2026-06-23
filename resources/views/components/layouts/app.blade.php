@@ -7,14 +7,10 @@
 <body class="hold-transition">
     <div class="wrapper">
         <!-- Navbar -->
-        <nav class="main-header navbar navbar-expand navbar-white navbar-light">
-            @include('components.partials.admin.navbar')
-        </nav>
+        @include('components.partials.admin.navbar')
 
         <!-- Sidebar -->
-        <aside class="main-sidebar sidebar-dark-primary elevation-1">
-            @include('components.partials.admin.sidebar')
-        </aside>
+        @include('components.partials.admin.sidebar')
 
         <!-- Main Content -->
         <main class="content-wrapper">
@@ -22,13 +18,11 @@
         </main>
 
         <!-- Footer -->
-        <footer class="main-footer">
-            @include('components.partials.admin.footer')
-        </footer>
+        @include('components.partials.admin.footer')
     </div>
 
     @include('components.partials.admin.script')
-
+    
     @stack('scripts')
 </body>
 
