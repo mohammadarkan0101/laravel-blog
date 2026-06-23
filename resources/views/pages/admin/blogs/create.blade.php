@@ -38,7 +38,12 @@
                                     </span>
                                 </div>
 
-                                <img id="thumbnail" src="{{ asset('assets/img/default-thumbnail.webp') }}" data-default="{{ asset('assets/img/default-thumbnail.webp') }}" class="img-fluid img-thumbnail img-post mb-3" alt="Thumbnail">
+                                <img id="thumbnail" 
+                                     src="{{ asset('assets/img/default-thumbnail.webp') }}" 
+                                     data-default="{{ asset('assets/img/default-thumbnail.webp') }}" 
+                                     class="img-fluid img-thumbnail img-post mb-3" 
+                                     alt="Thumbnail"
+                                >
 
                                 <!-- JUDUL BLOG -->
                                 <div class="mb-3">
