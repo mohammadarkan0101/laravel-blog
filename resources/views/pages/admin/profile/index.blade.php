@@ -238,8 +238,10 @@
                         previewImage.src  = originalImageSrc;
                         imageInput.value  = "";
                         removeInput.value = initialRemove;
-                    });
+                    }, 0);
                 });
+                
+                window.addEventListener("beforeunload", cleanup);
             });
         </script>
     @endpush
