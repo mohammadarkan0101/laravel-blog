@@ -62,7 +62,7 @@ class UserController extends Controller
 
         $user = User::create($validated);
 
-        $user->syncRoles($validated['role']);
+        $user->assignRole($validated['role']);
 
         return to_route('users.index')->with('success', 'User berhasil disimpan.');
     }

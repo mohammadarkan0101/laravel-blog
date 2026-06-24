@@ -1,4 +1,4 @@
-<aside class="main-sidebar sidebar-dark-primary elevation-1">
+<aside class="main-sidebar sidebar-dark-light elevation-1">
     <!-- Brand Logo -->
     <div class="brand-link d-flex align-items-center">
         <img src="#" alt="Brand Logo" class="brand-image">
