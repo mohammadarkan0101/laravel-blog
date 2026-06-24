@@ -124,7 +124,7 @@
                 let previewUrl = null;
 
                 inputImage.addEventListener('change', (e) => {
-                    const file = e.target.files?.[0];
+                    const file = e.target.files[0];
 
                     if (previewUrl) {
                         URL.revokeObjectURL(previewUrl);
