@@ -71,7 +71,7 @@ class UserController extends Controller
     {
         $roles = Role::all();
 
-        return view('pages.admin.users.edit', compact(['user', 'roles']));
+        return view('pages.admin.users.edit', compact('user', 'roles'));
     }
 
     public function update(UpdateDataUserRequest $request, User $user): RedirectResponse
