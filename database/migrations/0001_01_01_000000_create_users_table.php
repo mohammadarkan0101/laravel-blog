@@ -20,10 +20,11 @@ return new class extends Migration
             $table->string('google_id')->nullable();
             $table->string('phone')->nullable()->unique();
             $table->string('image')->nullable();
-            $table->boolean('status')->default(true);
+            $table->boolean('status')->default(true)->index();
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();
+            $table->index('created_at');
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
@@ -50,8 +51,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
-        Schema::dropIfExists('password_reset_tokens');
         Schema::dropIfExists('sessions');
+        Schema::dropIfExists('password_reset_tokens');
+        Schema::dropIfExists('users');
     }
 };
