@@ -110,20 +110,13 @@
 
     @push('scripts')
         <script>
-            $(document).ready(function() {
+            document.addEventListener('DOMContentLoaded', () => {
                 $('#summernote').summernote({
                     tabsize: 2,
                     height: 100
                 });
-
-                $('.custom-file-input').on('change', function() {
-                    const fileName = this.files[0]?.name ?? 'Pilih file...';
-                    $(this).next('.custom-file-label').text(fileName);
-                });
-            });
-
-            document.addEventListener('DOMContentLoaded', () => {
-                const inputImage   = document.getElementById('image');
+                
+                const inputImage = document.getElementById('image');
                 const previewImage = document.getElementById('thumbnail');
 
                 if (!inputImage || !previewImage) return;
@@ -135,12 +128,20 @@
 
                     if (previewUrl) {
                         URL.revokeObjectURL(previewUrl);
+                        previewUrl = null;
                     }
 
                     if (!file) return;
 
+                    const label = inputImage.nextElementSibling;
+                    if (label) label.textContent = file.name;
+
                     previewUrl = URL.createObjectURL(file);
                     previewImage.src = previewUrl;
+                });
+
+                window.addEventListener('beforeunload', () => {
+                    if (previewUrl) URL.revokeObjectURL(previewUrl);
                 });
             });
         </script>
