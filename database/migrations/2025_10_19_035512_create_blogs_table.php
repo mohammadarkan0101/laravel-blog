@@ -21,10 +21,11 @@ return new class extends Migration
             $table->string('slug')->unique();
             $table->text('content');
             $table->string('image')->nullable();
-            $table->enum('status', ['draft', 'published'])->default('draft');
+            $table->enum('status', ['draft', 'published'])->default('draft')->index();
             $table->timestamp('published_at')->nullable();
             $table->timestamps();
             $table->softDeletes();
+            $table->index('created_at');
         });
     }
 
