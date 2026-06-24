@@ -96,13 +96,13 @@
                                 <!-- TANGGAL DIBUAT -->
                                 <div class="mb-3">
                                     <label for="created_at" class="form-label">Tanggal Dibuat</label>
-                                    <input type="text" id="created_at" name="created_at" class="form-control" value="{{ $blog->created_at }}" required readonly>
+                                    <input type="text" id="created_at" name="created_at" class="form-control" value="{{ $blog->created_at }}" readonly>
                                 </div>
 
                                 <!-- TANGGAL RILIS -->
                                 <div class="mb-3">
                                     <label for="published_at" class="form-label">Tanggal Rilis</label>
-                                    <input type="text" id="published_at" name="published_at" class="form-control" value="{{ $blog->published_at }}" required readonly>
+                                    <input type="text" id="published_at" name="published_at" class="form-control" value="{{ $blog->published_at }}" readonly>
                                 </div>
 
                                 <a href="{{ route('blogs.index') }}" class="btn btn-default mr-1">
@@ -123,20 +123,13 @@
 
     @push('scripts')
         <script>
-            $(document).ready(function() {
+            document.addEventListener('DOMContentLoaded', () => {
                 $('#summernote').summernote({
                     tabsize: 2,
                     height: 100
                 });
-
-                $('.custom-file-input').on('change', function() {
-                    const fileName = this.files[0]?.name ?? 'Pilih file...';
-                    $(this).next('.custom-file-label').text(fileName);
-                });
-            });
-
-            document.addEventListener('DOMContentLoaded', () => {
-                const inputImage   = document.getElementById('image');
+                
+                const inputImage = document.getElementById('image');
                 const previewImage = document.getElementById('thumbnail');
 
                 if (!inputImage || !previewImage) return;
@@ -148,12 +141,20 @@
 
                     if (previewUrl) {
                         URL.revokeObjectURL(previewUrl);
+                        previewUrl = null;
                     }
 
                     if (!file) return;
 
+                    const label = inputImage.nextElementSibling;
+                    if (label) label.textContent = file.name;
+
                     previewUrl = URL.createObjectURL(file);
                     previewImage.src = previewUrl;
+                });
+
+                window.addEventListener('beforeunload', () => {
+                    if (previewUrl) URL.revokeObjectURL(previewUrl);
                 });
             });
         </script>
