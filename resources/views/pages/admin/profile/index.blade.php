@@ -191,10 +191,11 @@
     @push('scripts')
         <script>
             document.addEventListener("DOMContentLoaded", () => {
-                const imageInput = document.getElementById("image");
-                const removeInput = document.getElementById("removeImage");
+                const imageInput   = document.getElementById("image");
+                const removeInput  = document.getElementById("removeImage");
                 const previewImage = document.getElementById("previewImage");
                 const removeButton = document.getElementById("btnRemoveImage");
+                
                 const form = imageInput?.closest("form");
 
                 if (!form || !imageInput || !removeInput || !previewImage || !removeButton) return;
@@ -226,8 +227,8 @@
                 removeButton.addEventListener("click", () => {
                     cleanup();
 
-                    previewImage.src = defaultImageSrc;
-                    imageInput.value = "";
+                    previewImage.src  = defaultImageSrc;
+                    imageInput.value  = "";
                     removeInput.value = "1";
                 });
 
