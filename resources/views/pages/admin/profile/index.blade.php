@@ -191,12 +191,11 @@
     @push('scripts')
         <script>
             document.addEventListener("DOMContentLoaded", () => {
-                const imageInput   = document.getElementById("image");
-                const removeInput  = document.getElementById("removeImage");
+                const imageInput = document.getElementById("image");
+                const removeInput = document.getElementById("removeImage");
                 const previewImage = document.getElementById("previewImage");
                 const removeButton = document.getElementById("btnRemoveImage");
-                
-                const form = imageInput?.closest("form");
+                const form = imageInput.closest("form");
 
                 if (!form || !imageInput || !removeInput || !previewImage || !removeButton) return;
 
@@ -213,8 +212,8 @@
                     }
                 }
 
-                imageInput.addEventListener("change", ({ target }) => {
-                    const file = target.files[0];
+                imageInput.addEventListener("change", (e) => {
+                    const file = e.target.files[0];
                     if (!file) return;
 
                     cleanup();
@@ -227,8 +226,8 @@
                 removeButton.addEventListener("click", () => {
                     cleanup();
 
-                    previewImage.src  = defaultImageSrc;
-                    imageInput.value  = "";
+                    previewImage.src = defaultImageSrc;
+                    imageInput.value = "";
                     removeInput.value = "1";
                 });
 
@@ -236,8 +235,8 @@
                     setTimeout(() => {
                         cleanup();
 
-                        previewImage.src  = originalImageSrc;
-                        imageInput.value  = "";
+                        previewImage.src = originalImageSrc;
+                        imageInput.value = "";
                         removeInput.value = initialRemove;
                     }, 0);
                 });
