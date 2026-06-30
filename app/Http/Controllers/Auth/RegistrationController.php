@@ -13,7 +13,7 @@ use App\Http\Requests\StoreDataRegisterRequest;
 
 class RegistrationController extends Controller
 {
-    public function index(): RedirectResponse|View
+    public function index(): View
     {
         return view('pages.auth.register');
     }
