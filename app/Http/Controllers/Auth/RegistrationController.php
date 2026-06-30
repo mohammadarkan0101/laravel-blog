@@ -15,10 +15,6 @@ class RegistrationController extends Controller
 {
     public function index(): RedirectResponse|View
     {
-        if (Auth::check()) {
-            return $this->redirectUserByRole(Auth::user());
-        }
-
         return view('pages.auth.register');
     }
 
