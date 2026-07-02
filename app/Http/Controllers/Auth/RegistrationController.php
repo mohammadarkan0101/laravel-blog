@@ -13,12 +13,8 @@ use App\Http\Requests\StoreDataRegisterRequest;
 
 class RegistrationController extends Controller
 {
-    public function index(): RedirectResponse|View
+    public function index(): View
     {
-        if (Auth::check()) {
-            return $this->redirectUserByRole(Auth::user());
-        }
-
         return view('pages.auth.register');
     }
 
