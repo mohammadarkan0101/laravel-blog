@@ -12,12 +12,8 @@ use Illuminate\Http\RedirectResponse;
 
 class LoginController extends Controller
 {
-    public function index(): RedirectResponse|View
+    public function index(): View
     {
-        if (Auth::check()) {
-            return $this->redirectUserByRole(Auth::user());
-        }
-
         return view('pages.auth.login');
     }
 

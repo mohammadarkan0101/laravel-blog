@@ -64,12 +64,16 @@
 
     </form>
 
-    <form action="{{ url('oauth/google') }}" method="GET">
-        <button type="submit" class="btn btn-danger btn-block d-flex justify-content-center align-items-center">
-            <img src="{{ asset('assets/img/google-logo.webp') }}" alt="Google" width="18" height="18">
-            <span class="ml-2">Continue with Google</span>
-        </button>
-    </form>
+    <div class="d-flex align-items-center my-3">
+        <div class="flex-grow-1 border-top"></div>
+        <span class="mx-2 text-muted small">atau</span>
+        <div class="flex-grow-1 border-top"></div>
+    </div>
+
+    <a href="{{ route('google.redirect') }}" class="btn btn-danger btn-block d-flex justify-content-center align-items-center">
+        <img src="{{ asset('assets/img/google-logo.webp') }}" alt="Google" width="18" height="18">
+        <span class="ml-2">Continue with Google</span>
+    </a>
 
     <div class="text-center mt-3">
         <span class="text-muted">Belum punya akun?</span>
