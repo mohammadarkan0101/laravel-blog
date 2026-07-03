@@ -46,15 +46,17 @@
                                 </span>
                             </div>
 
-                            <form action="{{ route('update.profile') }}" method="POST" enctype="multipart/form-data">
+                            <form id="profileForm" action="{{ route('update.profile') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 @method('PATCH')
 
                                 <!-- PREVIEW IMAGE -->
-                                <img id="previewImage" 
-                                     src="{{ $user->image ? asset('storage/users/' . $user->image) : asset('assets/img/default-profile.webp') }}" 
-                                     data-default="{{ asset('assets/img/default-profile.webp') }}"
-                                     class="img-fluid img-thumbnail img-user mb-3"
+                                <img
+                                    id="previewImage"
+                                    src="{{ $user->image ? asset('storage/users/' . $user->image) : asset('assets/img/default-profile.webp') }}"
+                                    data-original="{{ $user->image ? asset('storage/users/' . $user->image) : asset('assets/img/default-profile.webp') }}"
+                                    data-default="{{ asset('assets/img/default-profile.webp') }}"
+                                    class="img-fluid img-thumbnail img-user mb-3"
                                 >
 
                                 <!-- INPUT FILE IMAGE -->
@@ -191,57 +193,53 @@
     @push('scripts')
         <script>
             document.addEventListener("DOMContentLoaded", () => {
-                const imageInput = document.getElementById("image");
+                const form        = document.getElementById("profileForm");
+                const imageInput  = document.getElementById("image");
+                const preview     = document.getElementById("previewImage");
                 const removeInput = document.getElementById("removeImage");
-                const previewImage = document.getElementById("previewImage");
-                const removeButton = document.getElementById("btnRemoveImage");
-                const form = imageInput.closest("form");
+                const btnRemove   = document.getElementById("btnRemoveImage");
 
-                if (!form || !imageInput || !removeInput || !previewImage || !removeButton) return;
-
-                const originalImageSrc = previewImage.src;
-                const defaultImageSrc = previewImage.dataset.default;
-                const initialRemove = removeInput.value;
+                if (!form || !imageInput || !preview || !removeInput || !btnRemove) return;
 
                 let objectUrl = null;
 
-                function cleanup() {
+                function clearPreview() {
                     if (objectUrl) {
                         URL.revokeObjectURL(objectUrl);
                         objectUrl = null;
                     }
                 }
 
-                imageInput.addEventListener("change", (e) => {
-                    const file = e.target.files[0];
+                imageInput.addEventListener("change", function () {
+                    const file = this.files[0];
                     if (!file) return;
 
-                    cleanup();
-
+                    clearPreview();
+                    
                     objectUrl = URL.createObjectURL(file);
-                    previewImage.src = objectUrl;
+                    preview.src = objectUrl;
                     removeInput.value = "0";
                 });
 
-                removeButton.addEventListener("click", () => {
-                    cleanup();
+                btnRemove.addEventListener("click", function () {
+                    clearPreview();
 
-                    previewImage.src = defaultImageSrc;
+                    preview.src = preview.dataset.default;
                     imageInput.value = "";
                     removeInput.value = "1";
                 });
 
-                form.addEventListener("reset", () => {
+                form.addEventListener("reset", function () {
                     setTimeout(() => {
-                        cleanup();
+                        clearPreview();
 
-                        previewImage.src = originalImageSrc;
+                        preview.src = preview.dataset.original;
                         imageInput.value = "";
-                        removeInput.value = initialRemove;
-                    }, 0);
+                        removeInput.value = "0";
+                    });
                 });
-                
-                window.addEventListener("beforeunload", cleanup);
+
+                window.addEventListener("beforeunload", clearPreview);
             });
         </script>
     @endpush
