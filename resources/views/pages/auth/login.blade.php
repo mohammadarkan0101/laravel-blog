@@ -64,10 +64,10 @@
 
     </form>
 
-    <div class="d-flex align-items-center my-3">
-        <div class="flex-grow-1 border-top"></div>
+    <div class="d-flex align-items-center my-1">
+        <div class="grow border-top"></div>
         <span class="mx-2 text-muted small">atau</span>
-        <div class="flex-grow-1 border-top"></div>
+        <div class="grow border-top"></div>
     </div>
 
     <a href="{{ route('google.redirect') }}" class="btn btn-danger btn-block d-flex justify-content-center align-items-center">
