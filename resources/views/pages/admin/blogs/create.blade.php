@@ -116,32 +116,32 @@
                     height: 100
                 });
                 
-                const inputImage = document.getElementById('image');
+                const inputImage   = document.getElementById('image');
                 const previewImage = document.getElementById('thumbnail');
 
                 if (!inputImage || !previewImage) return;
 
                 let previewUrl = null;
 
-                inputImage.addEventListener('change', (e) => {
-                    const file = e.target.files[0];
-
-                    if (previewUrl) {
-                        URL.revokeObjectURL(previewUrl);
-                        previewUrl = null;
+                function clearPreview() {
+                    if (objectUrl) {
+                        URL.revokeObjectURL(objectUrl);
+                        objectUrl = null;
                     }
+                }
+
+                inputImage.addEventListener('change', function () {
+                    const file = this.files[0];
 
                     if (!file) return;
+
+                    clearPreview();
 
                     const label = inputImage.nextElementSibling;
                     if (label) label.textContent = file.name;
 
                     previewUrl = URL.createObjectURL(file);
                     previewImage.src = previewUrl;
-                });
-
-                window.addEventListener('beforeunload', () => {
-                    if (previewUrl) URL.revokeObjectURL(previewUrl);
                 });
             });
         </script>

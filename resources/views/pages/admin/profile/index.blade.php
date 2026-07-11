@@ -212,10 +212,10 @@
 
                 imageInput.addEventListener("change", function () {
                     const file = this.files[0];
+
                     if (!file) return;
 
                     clearPreview();
-                    
                     objectUrl = URL.createObjectURL(file);
                     preview.src = objectUrl;
                     removeInput.value = "0";
@@ -223,7 +223,6 @@
 
                 btnRemove.addEventListener("click", function () {
                     clearPreview();
-
                     preview.src = preview.dataset.default;
                     imageInput.value = "";
                     removeInput.value = "1";
@@ -232,14 +231,11 @@
                 form.addEventListener("reset", function () {
                     setTimeout(() => {
                         clearPreview();
-
                         preview.src = preview.dataset.original;
                         imageInput.value = "";
                         removeInput.value = "0";
                     });
                 });
-
-                window.addEventListener("beforeunload", clearPreview);
             });
         </script>
     @endpush
