@@ -18,7 +18,7 @@ use App\Http\Requests\StoreDataBlogRequest;
 use App\Http\Requests\UpdateDataBlogRequest;
 
 class BlogController extends Controller
-
+{
     public function __construct()
     {
         $this->middleware(['auth', 'role:editor']);
