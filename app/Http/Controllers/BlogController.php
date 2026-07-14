@@ -16,12 +16,16 @@ use Yajra\DataTables\Facades\DataTables;
 use Intervention\Image\Drivers\Gd\Driver;
 use App\Http\Requests\StoreDataBlogRequest;
 use App\Http\Requests\UpdateDataBlogRequest;
+use Illuminate\Routing\Controllers\HasMiddleware;
 
-class BlogController extends Controller
+class BlogController extends Controller implements HasMiddleware
 {
-    public function __construct()
+    public static function middleware(): array
     {
-        $this->middleware(['auth', 'role:editor']);
+        return [
+            new Middleware('auth'),
+            new Middleware('role:editor'),
+        ];
     }
 
     public function datatable(): JsonResponse

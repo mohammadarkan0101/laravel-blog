@@ -11,12 +11,16 @@ use Illuminate\Http\RedirectResponse;
 use Yajra\DataTables\Facades\DataTables;
 use App\Http\Requests\StoreDataUserRequest;
 use App\Http\Requests\UpdateDataUserRequest;
+use Illuminate\Routing\Controllers\HasMiddleware;
 
-class UserController extends Controller
+class UserController extends Controller implements HasMiddleware
 {
-    public function __construct()
+    public static function middleware(): array
     {
-        $this->middleware(['auth', 'role:administrator']);
+        return [
+            new Middleware('auth'),
+            new Middleware('role:administrator'),
+        ];
     }
 
     public function datatable(): JsonResponse
