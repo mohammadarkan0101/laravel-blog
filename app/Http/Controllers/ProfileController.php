@@ -14,12 +14,17 @@ use Illuminate\Http\RedirectResponse;
 use Intervention\Image\Drivers\Gd\Driver;
 use App\Http\Requests\UpdateUserProfileRequest;
 use App\Http\Requests\UpdateUserPasswordRequest;
+use Illuminate\Routing\Controllers\HasMiddleware;
 
-class ProfileController extends Controller
+class ProfileController extends Controller implements HasMiddleware
 {
-    public function __construct()
+    public static function middleware(): array
     {
-        $this->middleware(['auth', 'role:administrator|editor']);
+        return [
+            new Middleware('auth'),
+            new Middleware('role:editor'),
+            new Middleware('role:administrator'),
+        ];
     }
 
     public function index(): View
