@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Models\User;
-use Illuminate\View\View;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreDataRegisterRequest;
+use App\Models\User;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Auth\Events\Registered;
-use App\Http\Requests\StoreDataRegisterRequest;
+use Illuminate\View\View;
 
 class RegistrationController extends Controller
 {

@@ -2,36 +2,42 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
-use Illuminate\View\View;
-use Illuminate\Support\Str;
-use Illuminate\Http\Request;
-use Intervention\Image\Format;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Intervention\Image\ImageManager;
-use Illuminate\Http\RedirectResponse;
-use Intervention\Image\Drivers\Gd\Driver;
-use App\Http\Requests\UpdateUserProfileRequest;
 use App\Http\Requests\UpdateUserPasswordRequest;
+use App\Http\Requests\UpdateUserProfileRequest;
+use App\Models\User;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+use Illuminate\View\View;
+use Intervention\Image\Drivers\Gd\Driver;
+use Intervention\Image\ImageManager;
 
 class ProfileController extends Controller 
 {
-    public function __construct()
+    public static function middleware(): array
     {
-        $this->middleware(['auth', 'role:editor,administrator']);
+        return [
+            new Middleware('auth'),
+            new Middleware('role:editor,administrator'),
+        ];
     }
 
     public function index(): View
     {
-        $user = Auth::user();
-
-        return view('pages.admin.profile.index', compact('user'));
+        return view('pages.admin.profile.index', [
+            'user' => auth()->user(),
+        ]);
     }
 
     public function updateUserProfile(UpdateUserProfileRequest $request): RedirectResponse
     {
+        /** @var User $user */
         $user = Auth::user();
+
         $data = $request->validated();
 
         if ($request->hasFile('image')) {
@@ -56,10 +62,10 @@ class ProfileController extends Controller
 
     public function updateUserPassword(UpdateUserPasswordRequest $request): RedirectResponse
     {
-        $password = $request->validated('password');
-
-        Auth::user()->update([
-            'password' => Hash::make($password)
+        $request->user()->update([
+            'password' => Hash::make(
+                $request->validated('password')
+            ),
         ]);
 
         return back()->with('success', 'Password berhasil diupdate.');
@@ -70,7 +76,7 @@ class ProfileController extends Controller
         // Mengambil input file gambar dari request
         $uploadedFile = $request->file('image');
         // Membuat nama file baru secara acak dengan ekstensi .webp
-        $newImageName = Str::random(10) . '.webp';
+        $newImageName = Str::uuid7() . '.webp';
         // Menentukan lokasi folder tempat menyimpan gambar
         $locationPath = storage_path('app/public/users');
         // Membuat instance ImageManager dari library Intervention Image

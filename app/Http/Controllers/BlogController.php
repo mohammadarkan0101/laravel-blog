@@ -2,26 +2,31 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Blog;
-use Illuminate\View\View;
-use Illuminate\Support\Str;
-use Illuminate\Http\Request;
-use Intervention\Image\Format;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Gate;
-use Intervention\Image\ImageManager;
-use Illuminate\Http\RedirectResponse;
-use Yajra\DataTables\Facades\DataTables;
-use Intervention\Image\Drivers\Gd\Driver;
 use App\Http\Requests\StoreDataBlogRequest;
 use App\Http\Requests\UpdateDataBlogRequest;
+use App\Models\Blog;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Str;
+use Illuminate\View\View;
+use Intervention\Image\Drivers\Gd\Driver;
+use Intervention\Image\Format;
+use Intervention\Image\ImageManager;
+use Yajra\DataTables\Facades\DataTables;
 
-class BlogController extends Controller
+class BlogController extends Controller implements HasMiddleware
 {
-    public function __construct()
+    public static function middleware(): array
     {
-        $this->middleware(['auth', 'role:editor']);
+        return [
+            new Middleware('auth'),
+            new Middleware('role:editor'),
+        ];
     }
 
     public function datatable(): JsonResponse
@@ -57,6 +62,7 @@ class BlogController extends Controller
     public function store(StoreDataBlogRequest $request): RedirectResponse
     {
         $validated = $request->validated();
+
         $validated['user_id'] = Auth::id();
 
         if ($request->hasFile('image')) {
@@ -107,7 +113,7 @@ class BlogController extends Controller
         // Mengambil input file gambar dari request
         $uploadedFile = $request->file('image');
         // Membuat nama file baru secara acak dengan ekstensi .webp
-        $newImageName = Str::random(10) . '.webp';
+        $newImageName = Str::uuid7() . '.webp';
         // Menentukan lokasi folder tempat menyimpan gambar
         $locationPath = storage_path('app/public/blogs');
         // Membuat instance ImageManager dari library Intervention Image

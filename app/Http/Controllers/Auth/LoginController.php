@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Models\User;
-use Illuminate\View\View;
-use Illuminate\Http\Request;
-use App\Http\Requests\LoginRequest;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\LoginRequest;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
 
 class LoginController extends Controller
 {
@@ -23,7 +23,10 @@ class LoginController extends Controller
 
         $request->session()->regenerate();
 
-        return $this->redirectUserByRole(Auth::user());
+        /** @var User $user */
+        $user = $request->user();
+
+        return $this->redirectUserByRole($user);
     }
 
     public function logout(Request $request): RedirectResponse

@@ -2,21 +2,26 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
-use Illuminate\View\View;
-use Illuminate\Http\JsonResponse;
-use Spatie\Permission\Models\Role;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Http\RedirectResponse;
-use Yajra\DataTables\Facades\DataTables;
 use App\Http\Requests\StoreDataUserRequest;
 use App\Http\Requests\UpdateDataUserRequest;
+use App\Models\User;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\View\View;
+use Spatie\Permission\Models\Role;
+use Yajra\DataTables\Facades\DataTables;
 
-class UserController extends Controller 
+class UserController extends Controller implements HasMiddleware
 {
-    public function __construct()
+    public static function middleware(): array
     {
-        $this->middleware(['auth', 'role:administrator']);
+        return [
+            new Middleware('auth'),
+            new Middleware('role:administrator'),
+        ];
     }
 
     public function datatable(): JsonResponse

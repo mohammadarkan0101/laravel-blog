@@ -2,13 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\View\View;
 
 class DashboardController extends Controller
 {
-    public function __construct()
+    public static function middleware(): array
     {
-        $this->middleware(['auth', 'role:editor,administrator']);
+        return [
+            new Middleware('auth'),
+            new Middleware('role:editor,administrator'),
+        ];
     }
 
     public function index(): View
