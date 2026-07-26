@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use App\Models\User;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -10,21 +12,18 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 
+#[Fillable(['title', 'user_id', 'content', 'image', 'status'])]
+
 class Blog extends Model
 {
     use HasFactory, HasUuids, SoftDeletes;
 
-    protected $fillable = [
-        'title',
-        'user_id',
-        'content',
-        'image',
-        'status',
-    ];
-
-    protected $casts = [
-        'published_at' => 'datetime',
-    ];
+    protected function casts(): array
+    {
+        return [
+            'published_at' => 'datetime',
+        ];
+    }
 
     public function user(): BelongsTo
     {
@@ -36,39 +35,40 @@ class Blog extends Model
         return $this->status === 'published';
     }
 
-    protected static function handlePublished(Blog $blog): void
+    public function handlePublished(): void
     {
-        if ($blog->isPublished()) {
-            $blog->published_at ??= now();
+        if ($this->isPublished()) {
+            $this->published_at ??= now();
         } else {
-            $blog->published_at = null;
+            $this->published_at = null;
         }
     }
 
     protected static function booted(): void
     {
-        static::creating(function (Blog $blog) {
-            $blog->slug = static::generateUniqueSlug($blog->title);
-            static::handlePublished($blog);
-        });
-
-        static::updating(function (Blog $blog) {
+        static::saving(function (Blog $blog) {
             if ($blog->isDirty('title')) {
-                $blog->slug = static::generateUniqueSlug($blog->title);
+                $blog->slug = static::generateUniqueSlug($blog->title, $blog->id);
             }
+
             if ($blog->isDirty('status')) {
-                static::handlePublished($blog);
+                $blog->handlePublished();
             }
         });
     }
 
-    protected static function generateUniqueSlug(string $title): string
+    protected static function generateUniqueSlug(string $title, ?string $ignoreId = null): string
     {
         $slug = Str::slug($title);
         $original = $slug;
         $count = 1;
 
-        while (static::where('slug', $slug)->exists()) {
+        while (
+            static::withTrashed()
+                ->where('slug', $slug)
+                ->when($ignoreId, fn ($query) => $query->where('id', '!=', $ignoreId))
+                ->exists()
+        ) {
             $slug = "{$original}-{$count}";
             $count++;
         }

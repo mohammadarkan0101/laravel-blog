@@ -35,9 +35,7 @@ class ProfileController extends Controller
 
     public function updateUserProfile(UpdateUserProfileRequest $request): RedirectResponse
     {
-        /** @var User $user */
-        $user = Auth::user();
-
+        $user = $request->user();
         $data = $request->validated();
 
         if ($request->hasFile('image')) {

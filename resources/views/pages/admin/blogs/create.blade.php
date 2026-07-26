@@ -110,13 +110,15 @@
 
     @push('scripts')
         <script>
-            document.addEventListener('DOMContentLoaded', () => {
+            $(function () {
                 $('#summernote').summernote({
                     tabsize: 2,
                     height: 100
                 });
-                
-                const inputImage   = document.getElementById('image');
+            });
+        
+            document.addEventListener('DOMContentLoaded', () => {
+                const inputImage = document.getElementById('image');
                 const previewImage = document.getElementById('thumbnail');
 
                 if (!inputImage || !previewImage) return;
@@ -124,24 +126,27 @@
                 let previewUrl = null;
 
                 function clearPreview() {
-                    if (objectUrl) {
-                        URL.revokeObjectURL(objectUrl);
-                        objectUrl = null;
+                    if (previewUrl) {
+                        URL.revokeObjectURL(previewUrl);
+                        previewUrl = null;
                     }
                 }
 
                 inputImage.addEventListener('change', function () {
                     const file = this.files[0];
-
-                    if (!file) return;
+                    const label = inputImage.nextElementSibling;
+                    const defaultSrc = previewImage.getAttribute('data-default');
 
                     clearPreview();
 
-                    const label = inputImage.nextElementSibling;
-                    if (label) label.textContent = file.name;
-
-                    previewUrl = URL.createObjectURL(file);
-                    previewImage.src = previewUrl;
+                    if (file) {
+                        if (label) label.textContent = file.name;
+                        previewUrl = URL.createObjectURL(file);
+                        previewImage.src = previewUrl;
+                    } else {
+                        if (label) label.textContent = 'Pilih file...';
+                        previewImage.src = defaultSrc;
+                    }
                 });
             });
         </script>

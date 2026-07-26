@@ -4,6 +4,8 @@ namespace App\Models;
 
 use App\Models\Blog;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
@@ -15,30 +17,21 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
 use Spatie\Permission\Traits\HasRoles;
 
+#[Fillable(['name', 'email', 'email_verified_at', 'password', 'phone', 'image', 'status', 'google_id'])]
+
+#[Hidden(['password', 'remember_token'])]
+
 class User extends Authenticatable implements MustVerifyEmail
 {
     use HasFactory, HasUuids, HasRoles, SoftDeletes, Notifiable;
 
-    protected $fillable = [
-        'name',
-        'email',
-        'email_verified_at',
-        'password',
-        'phone',
-        'image',
-        'status',
-        'google_id',
-    ];
-
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
-
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-        'password' => 'hashed',
-    ];
+    protected function casts(): array
+    {
+        return [
+            'email_verified_at' => 'datetime',
+            'password' => 'hashed',
+        ];
+    }
 
     protected function email(): Attribute
     {

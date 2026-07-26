@@ -23,7 +23,6 @@ class LoginController extends Controller
 
         $request->session()->regenerate();
 
-        /** @var User $user */
         $user = $request->user();
 
         return $this->redirectUserByRole($user);
