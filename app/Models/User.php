@@ -36,7 +36,8 @@ class User extends Authenticatable implements MustVerifyEmail
     protected function email(): Attribute
     {
         return Attribute::make(
-            set: fn($value) => Str::lower($value)
+            get: fn (?string $value) => $value ? strtolower($value) : null,
+            set: fn (?string $value) => $value ? strtolower($value) : null,
         );
     }
 
@@ -49,12 +50,13 @@ class User extends Authenticatable implements MustVerifyEmail
             ->implode('');
     }
 
-    public function getRoleAttribute(): string
+    protected function role(): Attribute
     {
-        return $this
-            ->getRoleNames()
-            ->map(fn($role) => Str::title($role))
-            ->implode(', ');
+        return Attribute::make(
+            get: fn () => $this->getRoleNames()
+                ->map(fn($role) => Str::title($role))
+                ->implode(', ')
+        );
     }
 
     public function isActive(): bool

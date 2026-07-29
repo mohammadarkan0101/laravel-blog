@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 
-#[Fillable(['title', 'user_id', 'content', 'image', 'status'])]
+#[Fillable(['title', 'user_id', 'content', 'image', 'status', 'slug', 'published_at'])]
 
 class Blog extends Model
 {

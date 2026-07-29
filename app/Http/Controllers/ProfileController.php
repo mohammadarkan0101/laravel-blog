@@ -26,11 +26,11 @@ class ProfileController extends Controller
         ];
     }
 
-    public function index(): View
+    public function index(Request $request): View
     {
-        return view('pages.admin.profile.index', [
-            'user' => auth()->user(),
-        ]);
+        $user = $request->user();
+
+        return view('pages.admin.profile.index', compact('user'));
     }
 
     public function updateUserProfile(UpdateUserProfileRequest $request): RedirectResponse
@@ -60,11 +60,13 @@ class ProfileController extends Controller
 
     public function updateUserPassword(UpdateUserPasswordRequest $request): RedirectResponse
     {
-        $request->user()->update([
-            'password' => Hash::make(
-                $request->validated('password')
-            ),
-        ]);
+        $user = $request->user();
+
+        $validated = $request->validated();
+
+        $validated['password'] = Hash::make($validated['password']);
+        
+        $user->update($validated);
 
         return back()->with('success', 'Password berhasil diupdate.');
     }

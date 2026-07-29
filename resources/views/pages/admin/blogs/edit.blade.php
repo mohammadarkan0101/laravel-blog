@@ -129,39 +129,54 @@
                     height: 100
                 });
             });
-        
+
             document.addEventListener('DOMContentLoaded', () => {
-                const inputImage = document.getElementById('image');
-                const previewImage = document.getElementById('thumbnail');
+                const imageInput = document.getElementById('image');
+                const thumbnail = document.getElementById('thumbnail');
+                const fileLabel = document.querySelector('.custom-file-label');
 
-                if (!inputImage || !previewImage) return;
+                imageInput.addEventListener('change', ({ target }) => {
+                    const file = target.files[0];
 
-                let previewUrl = null;
-
-                function clearPreview() {
-                    if (previewUrl) {
-                        URL.revokeObjectURL(previewUrl);
-                        previewUrl = null;
-                    }
-                }
-
-                inputImage.addEventListener('change', function () {
-                    const file = this.files[0];
-                    const label = inputImage.nextElementSibling;
-                    const defaultSrc = previewImage.getAttribute('data-default');
-
-                    clearPreview();
-
-                    if (file) {
-                        if (label) label.textContent = file.name;
-                        previewUrl = URL.createObjectURL(file);
-                        previewImage.src = previewUrl;
-                    } else {
-                        if (label) label.textContent = 'Pilih file...';
-                        previewImage.src = defaultSrc;
-                    }
+                    fileLabel.textContent = file?.name ?? 'Pilih file...';
+                    thumbnail.src = file
+                        ? URL.createObjectURL(file)
+                        : thumbnail.dataset.default;
                 });
             });
+        
+            // document.addEventListener('DOMContentLoaded', () => {
+            //     const inputImage = document.getElementById('image');
+            //     const previewImage = document.getElementById('thumbnail');
+
+            //     if (!inputImage || !previewImage) return;
+
+            //     let previewUrl = null;
+
+            //     function clearPreview() {
+            //         if (previewUrl) {
+            //             URL.revokeObjectURL(previewUrl);
+            //             previewUrl = null;
+            //         }
+            //     }
+
+            //     inputImage.addEventListener('change', function () {
+            //         const file = this.files[0];
+            //         const label = inputImage.nextElementSibling;
+            //         const defaultSrc = previewImage.getAttribute('data-default');
+
+            //         clearPreview();
+
+            //         if (file) {
+            //             if (label) label.textContent = file.name;
+            //             previewUrl = URL.createObjectURL(file);
+            //             previewImage.src = previewUrl;
+            //         } else {
+            //             if (label) label.textContent = 'Pilih file...';
+            //             previewImage.src = defaultSrc;
+            //         }
+            //     });
+            // });
         </script>
     @endpush
 

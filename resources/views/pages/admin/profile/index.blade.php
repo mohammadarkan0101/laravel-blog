@@ -112,7 +112,7 @@
                                 <!-- ROLE USER -->
                                 <div class="mb-3">
                                     <label for="role" class="form-label">Role User</label>
-                                    <input type="text" id="role" name="role" class="form-control" value="{{ $user->role }}" required readonly>
+                                    <input type="text" id="role" name="role" class="form-control" value="{{ $user->role }}" readonly>
                                 </div>
 
                                 <button type="reset" class="btn btn-default mr-1">
@@ -192,51 +192,82 @@
 
     @push('scripts')
         <script>
-            document.addEventListener("DOMContentLoaded", () => {
-                const form        = document.getElementById("profileForm");
-                const imageInput  = document.getElementById("image");
-                const preview     = document.getElementById("previewImage");
-                const removeInput = document.getElementById("removeImage");
-                const btnRemove   = document.getElementById("btnRemoveImage");
+            document.addEventListener('DOMContentLoaded', () => {
+                const form = document.getElementById('profileForm');
+                const imageInput = document.getElementById('image');
+                const previewImage = document.getElementById('previewImage');
+                const removeImage = document.getElementById('removeImage');
+                const btnRemoveImage = document.getElementById('btnRemoveImage');
 
-                if (!form || !imageInput || !preview || !removeInput || !btnRemove) return;
-
-                let objectUrl = null;
-
-                function clearPreview() {
-                    if (objectUrl) {
-                        URL.revokeObjectURL(objectUrl);
-                        objectUrl = null;
-                    }
-                }
-
-                imageInput.addEventListener("change", function () {
-                    const file = this.files[0];
+                imageInput.addEventListener('change', ({ target }) => {
+                    const file = target.files[0];
 
                     if (!file) return;
 
-                    clearPreview();
-                    objectUrl = URL.createObjectURL(file);
-                    preview.src = objectUrl;
-                    removeInput.value = "0";
+                    previewImage.src = URL.createObjectURL(file);
+                    removeImage.value = '0';
                 });
 
-                btnRemove.addEventListener("click", function () {
-                    clearPreview();
-                    preview.src = preview.dataset.default;
-                    imageInput.value = "";
-                    removeInput.value = "1";
+                btnRemoveImage.addEventListener('click', () => {
+                    imageInput.value = '';
+                    previewImage.src = previewImage.dataset.default;
+                    removeImage.value = '1';
                 });
 
-                form.addEventListener("reset", function () {
+                form.addEventListener('reset', () => {
                     setTimeout(() => {
-                        clearPreview();
-                        preview.src = preview.dataset.original;
-                        imageInput.value = "";
-                        removeInput.value = "0";
+                        imageInput.value = '';
+                        previewImage.src = previewImage.dataset.original;
+                        removeImage.value = '0';
                     });
                 });
             });
+        
+            // document.addEventListener("DOMContentLoaded", () => {
+            //     const form = document.getElementById("profileForm");
+            //     const imageInput = document.getElementById("image");
+            //     const preview = document.getElementById("previewImage");
+            //     const removeInput = document.getElementById("removeImage");
+            //     const btnRemove = document.getElementById("btnRemoveImage");
+
+            //     if (!form || !imageInput || !preview || !removeInput || !btnRemove) return;
+
+            //     let objectUrl = null;
+
+            //     function clearPreview() {
+            //         if (objectUrl) {
+            //             URL.revokeObjectURL(objectUrl);
+            //             objectUrl = null;
+            //         }
+            //     }
+
+            //     imageInput.addEventListener("change", function () {
+            //         const file = this.files[0];
+
+            //         if (!file) return;
+
+            //         clearPreview();
+            //         objectUrl = URL.createObjectURL(file);
+            //         preview.src = objectUrl;
+            //         removeInput.value = "0";
+            //     });
+
+            //     btnRemove.addEventListener("click", function () {
+            //         clearPreview();
+            //         preview.src = preview.dataset.default;
+            //         imageInput.value = "";
+            //         removeInput.value = "1";
+            //     });
+
+            //     form.addEventListener("reset", function () {
+            //         setTimeout(() => {
+            //             clearPreview();
+            //             preview.src = preview.dataset.original;
+            //             imageInput.value = "";
+            //             removeInput.value = "0";
+            //         });
+            //     });
+            // });
         </script>
     @endpush
 
