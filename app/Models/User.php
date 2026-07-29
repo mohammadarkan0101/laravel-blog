@@ -1,4 +1,4 @@
-<?php
+g<?php
 
 namespace App\Models;
 
@@ -50,7 +50,7 @@ class User extends Authenticatable implements MustVerifyEmail
             ->implode('');
     }
 
-    protected function role(): Attribute
+    protected function roleNames(): Attribute
     {
         return Attribute::make(
             get: fn () => $this->getRoleNames()
