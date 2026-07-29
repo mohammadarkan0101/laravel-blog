@@ -24,7 +24,7 @@ class GoogleController extends Controller
         try {
             $googleUser = Socialite::driver('google')->user();
 
-            if (blank($googleUser->email)) {
+            if (empty($googleUser->email)) {
                 return to_route('login')->with('error', 'Email Google tidak ditemukan.');
             }
 
@@ -33,7 +33,7 @@ class GoogleController extends Controller
                 ->first();
 
             if ($user) {
-                if (blank($user->google_id)) {
+                if (empty($user->google_id)) {
                     $user->update([
                         'google_id' => $googleUser->id,
                     ]);
