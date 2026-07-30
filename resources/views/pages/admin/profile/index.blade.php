@@ -112,7 +112,7 @@
                                 <!-- ROLE USER -->
                                 <div class="mb-3">
                                     <label for="role" class="form-label">Role User</label>
-                                    <input type="text" id="role" name="role" class="form-control" value="{{ $user->role }}" readonly>
+                                    <input type="text" id="role" name="role" class="form-control" value="{{ $user->role_names }}" readonly>
                                 </div>
 
                                 <button type="reset" class="btn btn-default mr-1">

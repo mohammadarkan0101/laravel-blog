@@ -36,8 +36,7 @@ class User extends Authenticatable implements MustVerifyEmail
     protected function email(): Attribute
     {
         return Attribute::make(
-            get: fn (?string $value) => $value ? strtolower($value) : null,
-            set: fn (?string $value) => $value ? strtolower($value) : null,
+            set: fn (string $value) => strtolower($value),
         );
     }
 
