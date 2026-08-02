@@ -50,11 +50,6 @@ class GoogleController extends Controller
                 $user->assignRole('user');
             }
 
-            Log::info('Google login success', [
-                'user_id'   => $user->id,
-                'google_id' => $googleUser->id,
-            ]);
-
             Auth::login($user);
 
             return redirect()->intended(route('home'));
