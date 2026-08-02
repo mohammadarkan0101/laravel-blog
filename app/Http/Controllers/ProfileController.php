@@ -75,7 +75,7 @@ class ProfileController extends Controller
         // Mengambil input file gambar dari request
         $uploadedFile = $request->file('image');
         // Membuat nama file baru secara acak dengan ekstensi .webp
-        $newImageName = Str::uuid7() . '.webp';
+        $newImageName = 'user_profile_' . Str::lower(Str::random(16)) . '.webp';
         // Menentukan lokasi folder tempat menyimpan gambar
         $locationPath = storage_path('app/public/users');
         // Membuat instance ImageManager dari library Intervention Image
