@@ -63,8 +63,6 @@ class UserController extends Controller implements HasMiddleware
     {
         $validated = $request->validated();
 
-        $validated['password'] = Hash::make($validated['password']);
-
         $user = User::create($validated);
 
         $user->assignRole($validated['role']);
@@ -83,9 +81,7 @@ class UserController extends Controller implements HasMiddleware
     {
         $validated = $request->validated();
 
-        if ($request->filled('password')) {
-            $validated['password'] = Hash::make($validated['password']);
-        } else {
+        if (empty($validated['password'])) {
             unset($validated['password']);
         }
 

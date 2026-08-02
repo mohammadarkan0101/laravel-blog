@@ -20,11 +20,9 @@ class RegistrationController extends Controller
 
     public function register(StoreDataRegisterRequest $request): RedirectResponse
     {
-        $validated = $request->validated();
+        $data = $request->validated();
 
-        $validated['password'] = Hash::make($validated['password']);
-
-        $user = User::create($validated);
+        $user = User::create($data);
 
         $user->assignRole('user');
 

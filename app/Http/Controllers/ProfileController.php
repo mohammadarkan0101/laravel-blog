@@ -62,11 +62,9 @@ class ProfileController extends Controller
     {
         $user = $request->user();
 
-        $validated = $request->validated();
-
-        $validated['password'] = Hash::make($validated['password']);
+        $data = $request->validated();
         
-        $user->update($validated);
+        $user->update($data);
 
         return back()->with('success', 'Password berhasil diupdate.');
     }
