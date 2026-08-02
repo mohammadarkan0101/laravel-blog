@@ -36,17 +36,18 @@ class ProfileController extends Controller
     public function updateUserProfile(UpdateUserProfileRequest $request): RedirectResponse
     {
         $user = $request->user();
-        $data = $request->validated();
+        
+        $validated = $request->validated();
 
         if ($request->hasFile('image')) {
             $this->handleDeleteImage($user);
-            $data['image'] = $this->handleUploadImage($request);
+            $validated['image'] = $this->handleUploadImage($request);
         } elseif ($request->boolean('removeImage')) {
             $this->handleDeleteImage($user);
-            $data['image'] = null;
+            $validated['image'] = null;
         }
 
-        $user->fill($data);
+        $user->fill($validated);
 
         if ($user->isDirty('email')) {
             $user->email_verified_at = null;
@@ -62,9 +63,9 @@ class ProfileController extends Controller
     {
         $user = $request->user();
 
-        $data = $request->validated();
+        $validated = $request->validated();
         
-        $user->update($data);
+        $user->update($validated);
 
         return back()->with('success', 'Password berhasil diupdate.');
     }
