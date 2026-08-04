@@ -43,7 +43,7 @@
         <div class="form-group">
             <label for="phone" class="font-weight-bold">Nomor Telepon</label>
             <div class="input-group">
-                <input type="number" id="phone" name="phone" class="form-control @error('phone') is-invalid @enderror" placeholder="Nomor Telepon" value="{{ old('phone') }}" required>
+                <input type="tel" id="phone" name="phone" class="form-control @error('phone') is-invalid @enderror" placeholder="Nomor Telepon" value="{{ old('phone') }}" required>
                 <div class="input-group-append">
                     <span class="input-group-text">
                         <i class="bi bi-telephone"></i>
