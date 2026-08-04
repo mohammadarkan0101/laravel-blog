@@ -53,7 +53,7 @@
                                 <!-- NOMOR TELEPON -->
                                 <div class="mb-3">
                                     <label for="phone" class="form-label">Nomor Telepon</label>
-                                    <input type="number" id="phone" name="phone" class="form-control @error('phone') is-invalid @enderror" value="{{ old('phone') }}" required>
+                                    <input type="tel" id="phone" name="phone" class="form-control @error('phone') is-invalid @enderror" value="{{ old('phone') }}" required>
                                     @error('phone')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
