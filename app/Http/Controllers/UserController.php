@@ -54,9 +54,7 @@ class UserController extends Controller implements HasMiddleware
 
     public function create(): View
     {
-        $roles = cache()->remember('list_roles_all', now()->addDay(), fn() => Role::all());
-
-        cache()->touch('list_roles_all', now()->addDay());
+        $roles = Role::all();
 
         return view('pages.admin.users.create', compact('roles'));
     }
@@ -74,9 +72,7 @@ class UserController extends Controller implements HasMiddleware
 
     public function edit(User $user): View
     {
-        $roles = cache()->remember('list_roles_all', now()->addDay(), fn() => Role::all());
-
-        cache()->touch('list_roles_all', now()->addDay());
+        $roles = Role::all();
 
         return view('pages.admin.users.edit', compact('user', 'roles'));
     }
