@@ -28,14 +28,14 @@ class ProfileController extends Controller
 
     public function index(): View
     {
-        $user = auth()->user();
+        $user = Auth::user();
 
         return view('pages.admin.profile.index', compact('user'));
     }
 
     public function updateUserProfile(UpdateUserProfileRequest $request): RedirectResponse
     {
-        $user = auth()->user();
+        $user = Auth::user();
         
         $validated = $request->validated();
 
@@ -61,7 +61,7 @@ class ProfileController extends Controller
 
     public function updateUserPassword(UpdateUserPasswordRequest $request): RedirectResponse
     {
-        $user = auth()->user();
+        $user = Auth::user();
 
         $validated = $request->validated();
         
