@@ -35,7 +35,7 @@ class Blog extends Model
         return $this->status === 'published';
     }
 
-    public function handlePublished(): void
+    protected function handlePublished(): void
     {
         if ($this->isPublished()) {
             $this->published_at ??= now();
@@ -47,13 +47,14 @@ class Blog extends Model
     protected static function booted(): void
     {
         static::saving(function (Blog $blog) {
-            if ($blog->isDirty('title')) {
-                $blog->slug = static::generateUniqueSlug($blog->title, $blog->id);
+            if ($blog->isDirty('title') || !$blog->exists) {
+                $blog->slug = static::generateUniqueSlug(
+                    $blog->title, 
+                    $blog->id
+                );
             }
 
-            if ($blog->isDirty('status')) {
-                $blog->handlePublished();
-            }
+            $blog->handlePublished();
         });
     }
 

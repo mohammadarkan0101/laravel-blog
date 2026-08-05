@@ -30,6 +30,7 @@ class User extends Authenticatable implements MustVerifyEmail
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'status' => 'boolean',
         ];
     }
 
@@ -38,15 +39,6 @@ class User extends Authenticatable implements MustVerifyEmail
         return Attribute::make(
             set: fn (string $value) => strtolower($value),
         );
-    }
-
-    public function initials(): string
-    {
-        return Str::of($this->name)
-            ->explode(' ')
-            ->take(2)
-            ->map(fn($word) => Str::substr($word, 0, 1))
-            ->implode('');
     }
 
     protected function roleNames(): Attribute
@@ -58,14 +50,27 @@ class User extends Authenticatable implements MustVerifyEmail
         );
     }
 
-    public function isActive(): bool
+    protected function initials(): Attribute
     {
-        return (bool) $this->status;
+        return Attribute::make(
+            get: fn () => Str::of($this->name)
+                ->explode(' ')
+                ->take(2)
+                ->map(fn ($word) => Str::substr($word, 0, 1))
+                ->implode('')
+        );
     }
 
-    public function scopeActive(Builder $query): Builder
+    protected function isActive(): Attribute
     {
-        return $query->where('status', 1);
+        return Attribute::make(
+            get: fn () => (bool) $this->status,
+        );
+    }
+
+    protected function scopeActive(Builder $query): Builder
+    {
+        return $query->where('status', true);
     }
 
     public function blogs(): HasMany
