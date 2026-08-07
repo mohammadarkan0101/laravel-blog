@@ -29,7 +29,7 @@ class LoginRequest extends FormRequest
         return [
             'email'    => $this->email,
             'password' => $this->password,
-            'status'   => 1,
+            'status'   => true,
         ];
     }
 
