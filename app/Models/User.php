@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
-use App\Models\Blog;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
+use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
@@ -37,7 +37,7 @@ class User extends Authenticatable implements MustVerifyEmail
     protected function email(): Attribute
     {
         return Attribute::make(
-            set: fn (string $value) => strtolower($value),
+            set: fn (string $value) => strtolower(trim($value)),
         );
     }
 
@@ -45,7 +45,7 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return Attribute::make(
             get: fn () => $this->getRoleNames()
-                ->map(fn($role) => Str::title($role))
+                ->map(fn ($role) => Str::title($role))
                 ->implode(', ')
         );
     }
@@ -54,6 +54,7 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return Attribute::make(
             get: fn () => Str::of($this->name)
+                ->squish()
                 ->explode(' ')
                 ->take(2)
                 ->map(fn ($word) => Str::substr($word, 0, 1))
@@ -64,13 +65,14 @@ class User extends Authenticatable implements MustVerifyEmail
     protected function isActive(): Attribute
     {
         return Attribute::make(
-            get: fn () => (bool) $this->status,
+            get: fn () => $this->status,
         );
     }
 
-    protected function scopeActive(Builder $query): Builder
+    #[Scope]
+    protected function active(Builder $query): void
     {
-        return $query->where('status', true);
+        $query->where('status', true);
     }
 
     public function blogs(): HasMany

@@ -20,7 +20,7 @@
             <!-- User Avatar / Dropdown Trigger -->
             <a href="#" class="nav-link p-0" data-toggle="dropdown">
                 <div class="rounded-circle bg-dark text-white d-flex align-items-center justify-content-center initials">
-                    {{ auth()->user()->initials() }}
+                    {{ auth()->user()->initials }}
                 </div>
             </a>
 
