@@ -34,6 +34,13 @@ class User extends Authenticatable implements MustVerifyEmail
         ];
     }
 
+    protected function name(): Attribute
+    {
+        return Attribute::make(
+            set: fn (string $value) => Str::squish($value)
+        );
+    }
+
     protected function email(): Attribute
     {
         return Attribute::make(
