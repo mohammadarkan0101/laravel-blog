@@ -59,13 +59,14 @@ class User extends Authenticatable implements MustVerifyEmail
                 ->take(2)
                 ->map(fn ($word) => Str::substr($word, 0, 1))
                 ->implode('')
+                ->upper(),
         );
     }
 
     protected function isActive(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->status,
+            get: fn () => (bool) $this->status,
         );
     }
 
