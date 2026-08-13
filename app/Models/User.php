@@ -63,9 +63,8 @@ class User extends Authenticatable implements MustVerifyEmail
             get: fn () => Str::of($this->name)
                 ->explode(' ')
                 ->take(2)
-                ->map(fn ($word) => Str::substr($word, 0, 1))
+                ->map(fn ($word) => Str::of($word)->substr(0, 1)->upper())
                 ->implode('')
-                ->upper(),
         );
     }
 
