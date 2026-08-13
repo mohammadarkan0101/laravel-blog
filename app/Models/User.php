@@ -68,7 +68,7 @@ class User extends Authenticatable implements MustVerifyEmail
         );
     }
 
-    protected function isActive(): Attribute
+    public function isActive(): Attribute
     {
         return Attribute::make(
             get: fn () => (bool) $this->status,
