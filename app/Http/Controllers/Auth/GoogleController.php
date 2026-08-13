@@ -57,6 +57,7 @@ class GoogleController extends Controller
         } catch (Throwable $e) {
             Log::error('Google login failed', [
                 'message' => $e->getMessage(),
+                'trace'   => $e->getTraceAsString(),
             ]);
 
             return to_route('login')->with('error', 'Gagal login dengan Google.');
