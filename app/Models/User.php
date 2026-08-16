@@ -76,7 +76,7 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->status;
     }
 
-    public function sendEmailVerificationNotification()
+    public function sendEmailVerificationNotification(): void
     {
         $otp = random_int(100000, 999999);
 
