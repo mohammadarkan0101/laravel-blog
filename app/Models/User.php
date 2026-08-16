@@ -18,7 +18,7 @@ use Illuminate\Support\Str;
 use Spatie\Permission\Traits\HasRoles;
 
 #[Fillable(['name', 'email', 'email_verified_at', 'password', 'phone', 'image', 'status', 'google_id', 'otp', 'otp_expires_at'])]
-#[Hidden(['password', 'remember_token'])]
+#[Hidden(['password', 'remember_token', 'otp', 'otp_expires_at'])]
 class User extends Authenticatable implements MustVerifyEmail
 {
     use HasFactory, HasUuids, HasRoles, SoftDeletes, Notifiable;
@@ -27,6 +27,7 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return [
             'email_verified_at' => 'datetime',
+            'otp_expires_at' => 'datetime',
             'password' => 'hashed',
             'status' => 'boolean',
         ];
@@ -84,7 +85,7 @@ class User extends Authenticatable implements MustVerifyEmail
             'otp' => $otp,
             'otp_expires_at' => now()->addMinutes(10),
         ])->save();
-        
+
         $this->notify(new CustomVerifyEmail($otp));
     }
 

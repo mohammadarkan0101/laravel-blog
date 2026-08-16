@@ -20,7 +20,7 @@ class CustomVerifyEmail extends Notification
     public function toMail(User $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->subject('Verifikasi Alamat Email Anda')
+            ->subject('Kode OTP Verifikasi Email')
             ->greeting("Halo, {$notifiable->name}!")
             ->line('Terima kasih telah mendaftar. Silakan gunakan kode OTP di bawah ini:')
             ->line('**KODE OTP ANDA:**')
