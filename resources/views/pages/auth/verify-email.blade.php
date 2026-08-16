@@ -18,7 +18,7 @@
 
         <div class="form-group mb-3">
             <label for="otp" class="font-weight-bold mb-2">Masukkan Kode OTP</label>
-            <input type="text" name="otp" id="otp" class="form-control form-control-lg text-center @error('otp') is-invalid @enderror" placeholder="123456" maxlength="6" required style="letter-spacing: 8px; font-size: 24px; font-weight: bold;">
+            <input type="text" name="otp" id="otp" class="form-control form-control-lg text-center @error('otp') is-invalid @enderror" placeholder="******" maxlength="6" required style="letter-spacing: 8px; font-size: 24px; font-weight: bold;">
 
             @error('otp')
                 <div class="invalid-feedback text-start mt-1">
