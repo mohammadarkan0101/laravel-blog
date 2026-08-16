@@ -14,7 +14,7 @@
     <form action="{{ route('otp.verify') }}" method="POST" class="mb-4">
         @csrf
 
-        <input type="hidden" name="email" value="{{ auth()->user()->email }}">
+        <input type="hidden" name="email" value="{{ auth()->user()?->email }}">
 
         <div class="form-group mb-3">
             <label for="otp" class="font-weight-bold mb-2">Masukkan Kode OTP</label>
@@ -41,7 +41,7 @@
     <form action="{{ route('otp.generate') }}" method="POST">
         @csrf
 
-        <input type="hidden" name="email" value="{{ auth()->user()->email }}">
+        <input type="hidden" name="email" value="{{ auth()->user()?->email }}">
 
         <button type="submit" class="btn btn-outline-secondary w-100">
             <i class="bi bi-arrow-clockwise mr-1"></i> Kirim Ulang Kode OTP
