@@ -1,31 +1,56 @@
 <x-layouts.auth title="Verifikasi Email">
 
-    <header class="mb-3">
-        <h4 class="font-weight-bold">📧 Verifikasi Email</h4>
+    <header class="mb-4">
+        <h4 class="font-weight-bold">📧 Verifikasi Kode OTP</h4>
         <p class="text-muted mb-0">
-            Terima kasih telah mendaftar. Sebelum melanjutkan, silakan verifikasi alamat email Anda
-            dengan mengklik tautan yang telah kami kirimkan.
+            Terima kasih telah mendaftar. Silakan masukkan <strong>6 digit kode OTP</strong> yang telah kami kirimkan ke alamat email Anda.
         </p>
     </header>
 
-    @if (session('status') == 'verification-link-sent')
-        <x-bootstrap.alert type="success" message="Link verifikasi baru telah dikirim ke alamat email Anda." />
+    @if (session('status') == 'verification-link-sent' || session('message'))
+        <x-bootstrap.alert type="success" :message="session('status') == 'verification-link-sent' ? 'Kode OTP baru telah dikirim ke email Anda.' : session('message')" />
     @endif
 
-    <p class="mb-3">
-        Jika Anda tidak menerima email verifikasi, klik tombol di bawah ini untuk
-        mengirim ulang.
+    <form action="{{ route('otp.verify') }}" method="POST" class="mb-4">
+        @csrf
+
+        <input type="hidden" name="email" value="{{ auth()->user()->email }}">
+
+        <div class="form-group mb-3">
+            <label for="otp" class="font-weight-bold mb-2">Masukkan Kode OTP</label>
+            <input type="text" name="otp" id="otp" class="form-control form-control-lg text-center @error('otp') is-invalid @enderror" placeholder="123456" maxlength="6" required style="letter-spacing: 8px; font-size: 24px; font-weight: bold;">
+
+            @error('otp')
+                <div class="invalid-feedback text-start mt-1">
+                    {{ $message }}
+                </div>
+            @enderror
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100 btn-lg">
+            <i class="bi bi-shield-check mr-1"></i> Verifikasi OTP
+        </button>
+    </form>
+
+    <hr class="text-muted my-3">
+
+    <p class="mb-2 text-muted text-center" style="font-size: 14px;">
+        Tidak menerima kode? Pastikan cek folder Spam.
     </p>
 
-    <form action="{{ route('verification.store') }}" method="POST">
+    <form action="{{ route('otp.generate') }}" method="POST">
         @csrf
-        <button type="submit" class="btn btn-primary w-100">
-            <i class="bi bi-box-arrow-in-right mr-1"></i> Kirim Ulang Email Verifikasi
+
+        <input type="hidden" name="email" value="{{ auth()->user()->email }}">
+
+        <button type="submit" class="btn btn-outline-secondary w-100">
+            <i class="bi bi-arrow-clockwise mr-1"></i> Kirim Ulang Kode OTP
         </button>
     </form>
 
     <form action="{{ route('logout') }}" method="POST">
         @csrf
+
         <button type="submit" class="btn btn-light w-100 mt-2">
             <i class="bi bi-box-arrow-right mr-1"></i> Logout
         </button>

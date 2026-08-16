@@ -1,13 +1,14 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\Auth\GoogleController;
-use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\ConfirmationController;
+use App\Http\Controllers\Auth\GoogleController;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\NewPasswordController;
+use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegistrationController;
 use App\Http\Controllers\Auth\VerificationController;
-use App\Http\Controllers\Auth\PasswordResetLinkController;
+use App\Http\Controllers\Auth\OtpController;
+use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
 
@@ -43,7 +44,7 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
-
+    
     Route::get('verify-email', [VerificationController::class, 'notice'])
         ->name('verification.notice');
 
@@ -60,6 +61,12 @@ Route::middleware('auth')->group(function () {
 
     Route::post('confirm-password', [ConfirmationController::class, 'store'])
         ->name('confirmation.store');
+
+    Route::post('/otp/generate', [OtpController::class, 'generateOtp'])
+        ->name('otp.generate');
+    
+    Route::post('/otp/verify', [OtpController::class, 'verifyOtp'])
+        ->name('otp.verify');
 
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 });

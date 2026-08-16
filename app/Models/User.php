@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
+use App\Notifications\CustomVerifyEmail;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
-use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
@@ -17,10 +17,8 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
 use Spatie\Permission\Traits\HasRoles;
 
-#[Fillable(['name', 'email', 'email_verified_at', 'password', 'phone', 'image', 'status', 'google_id'])]
-
+#[Fillable(['name', 'email', 'email_verified_at', 'password', 'phone', 'image', 'status', 'google_id', 'otp', 'otp_expires_at'])]
 #[Hidden(['password', 'remember_token'])]
-
 class User extends Authenticatable implements MustVerifyEmail
 {
     use HasFactory, HasUuids, HasRoles, SoftDeletes, Notifiable;
@@ -47,7 +45,7 @@ class User extends Authenticatable implements MustVerifyEmail
             set: fn (string $value) => strtolower(trim($value)),
         );
     }
-
+    
     protected function roleNames(): Attribute
     {
         return Attribute::make(
@@ -68,17 +66,26 @@ class User extends Authenticatable implements MustVerifyEmail
         );
     }
 
-    public function isActive(): Attribute
-    {
-        return Attribute::make(
-            get: fn () => (bool) $this->status,
-        );
-    }
-
-    #[Scope]
-    protected function active(Builder $query): void
+    public function scopeActive(Builder $query): void
     {
         $query->where('status', true);
+    }
+
+    public function isActive(): bool
+    {
+        return $this->status;
+    }
+
+    public function sendEmailVerificationNotification()
+    {
+        $otp = random_int(100000, 999999);
+
+        $this->forceFill([
+            'otp' => $otp,
+            'otp_expires_at' => now()->addMinutes(10),
+        ])->save();
+        
+        $this->notify(new CustomVerifyEmail($otp));
     }
 
     public function blogs(): HasMany
