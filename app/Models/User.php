@@ -67,16 +67,6 @@ class User extends Authenticatable implements MustVerifyEmail
         );
     }
 
-    public function scopeActive(Builder $query): void
-    {
-        $query->where('status', true);
-    }
-
-    public function isActive(): bool
-    {
-        return $this->status;
-    }
-
     public function sendEmailVerificationNotification(): void
     {
         $otp = random_int(100000, 999999);
@@ -87,6 +77,16 @@ class User extends Authenticatable implements MustVerifyEmail
         ])->save();
 
         $this->notify(new CustomVerifyEmail($otp));
+    }
+
+    public function scopeActive(Builder $query): void
+    {
+        $query->where('status', true);
+    }
+
+    public function isActive(): bool
+    {
+        return $this->status;
     }
 
     public function blogs(): HasMany
