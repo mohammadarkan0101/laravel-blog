@@ -22,10 +22,10 @@ class CustomVerifyEmail extends Notification
         return (new MailMessage)
             ->subject('Kode OTP Verifikasi Email')
             ->greeting("Halo, {$notifiable->name}!")
-            ->line('Terima kasih telah mendaftar. Silakan gunakan kode OTP di bawah ini:')
-            ->line('**KODE OTP ANDA:**')
-            ->line('# ' . $this->otp)
-            ->line('Kode ini berlaku selama 10 menit.')
+            ->line('Terima kasih telah mendaftar.')
+            ->line('Silakan gunakan kode OTP berikut:')
+            ->line("**{$this->otp}**")
+            ->line('Kode OTP berlaku selama 10 menit.')
             ->action('Verifikasi Sekarang', url('/verify-email'))
             ->salutation("Salam,\n" . config('app.name'));
     }
