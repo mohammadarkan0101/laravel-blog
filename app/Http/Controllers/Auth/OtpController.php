@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\RateLimiter;
 
 class OtpController extends Controller
 {
@@ -15,6 +17,15 @@ class OtpController extends Controller
         ]);
 
         $user = $request->user();
+        
+        $throttleKey = 'verify-otp:' . $user->id;
+
+        if (RateLimiter::tooManyAttempts($throttleKey, 5)) {
+            $seconds = RateLimiter::availableIn($throttleKey);
+            return back()->withErrors([
+                'otp' => "Terlalu banyak percobaan salah. Silakan coba lagi dalam {$seconds} detik.",
+            ]);
+        }
 
         if (! $user->otp_expires_at || now()->isAfter($user->otp_expires_at)) {
             return back()->withErrors([
@@ -22,11 +33,15 @@ class OtpController extends Controller
             ]);
         }
 
-        if ($user->otp !== $request->otp) {
+        if (! Hash::check($request->otp, $user->otp)) {
+            RateLimiter::hit($throttleKey, 60); 
+            
             return back()->withErrors([
                 'otp' => 'Kode OTP yang Anda masukkan salah.',
             ]);
         }
+
+        RateLimiter::clear($throttleKey);
 
         $user->markEmailAsVerified();
 
@@ -41,6 +56,14 @@ class OtpController extends Controller
     public function generateOtp(Request $request): RedirectResponse
     {
         $user = $request->user();
+
+        $throttleKey = 'send-otp:' . $user->id;
+        if (RateLimiter::tooManyAttempts($throttleKey, 1)) {
+            $seconds = RateLimiter::availableIn($throttleKey);
+            return back()->with('message', "Tunggu {$seconds} detik sebelum meminta kode baru.");
+        }
+
+        RateLimiter::hit($throttleKey, 60); 
 
         $user->sendEmailVerificationNotification();
 

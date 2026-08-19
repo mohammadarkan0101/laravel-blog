@@ -70,6 +70,10 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function sendEmailVerificationNotification(): void
     {
+        if ($this->otp_expires_at && now()->addMinutes(9)->isAfter($this->otp_expires_at)) {
+            return; 
+        }
+        
         $otp = random_int(100000, 999999);
 
         $this->forceFill([
