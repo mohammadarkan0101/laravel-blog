@@ -24,20 +24,17 @@ class LoginRequest extends FormRequest
         ];
     }
 
-    protected function credentials(): array
-    {
-        return [
-            'email'    => $this->email,
-            'password' => $this->password,
-            'status'   => TRUE,
-        ];
-    }
-
     public function authenticate(): void
     {
         $this->ensureIsNotRateLimited();
 
-        if (! Auth::attempt($this->credentials(), $this->boolean('remember'))) {
+        $credentials = [
+            'email'    => $this->email,
+            'password' => $this->password,
+            'status'   => true,
+        ];
+
+        if (! Auth::attempt($credentials, $this->boolean('remember'))) {
 
             RateLimiter::hit($this->throttleKey());
 
