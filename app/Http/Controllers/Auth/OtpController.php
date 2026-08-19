@@ -22,7 +22,7 @@ class OtpController extends Controller
             ]);
         }
 
-        if ((string) $user->otp !== (string) $request->otp) {
+        if ($user->otp !== $request->otp) {
             return back()->withErrors([
                 'otp' => 'Kode OTP yang Anda masukkan salah.',
             ]);

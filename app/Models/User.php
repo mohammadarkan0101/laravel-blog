@@ -72,7 +72,7 @@ class User extends Authenticatable implements MustVerifyEmail
         $otp = random_int(100000, 999999);
 
         $this->forceFill([
-            'otp' => $otp,
+            'otp' => Hash::make($otp),
             'otp_expires_at' => now()->addMinutes(10),
         ])->save();
 
