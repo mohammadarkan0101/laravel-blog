@@ -43,7 +43,6 @@ class OtpController extends Controller
         RateLimiter::clear($throttleKey);
 
         $user->markEmailAsVerified();
-
         $user->forceFill([
             'otp' => null,
             'otp_expires_at' => null,
