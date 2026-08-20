@@ -44,7 +44,7 @@ class GoogleController extends Controller
                     'name' => $googleUser->name,
                     'email' => $googleUser->email,
                     'email_verified_at' => now(),
-                    'password' => Str::password(32),
+                    'password' => Hash::make(Str::password(8)),
                 ]);
 
                 $user->assignRole('user');
