@@ -19,7 +19,6 @@ class OtpController extends Controller
         $user = $request->user();
         
         $throttleKey = 'verify-otp:' . $user->id;
-
         if (RateLimiter::tooManyAttempts($throttleKey, 5)) {
             $seconds = RateLimiter::availableIn($throttleKey);
             return back()->withErrors([
