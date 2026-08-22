@@ -62,11 +62,11 @@ Route::middleware('auth')->group(function () {
     Route::post('confirm-password', [ConfirmationController::class, 'store'])
         ->name('confirmation.store');
 
-    Route::post('/otp/generate', [OtpController::class, 'generateOtp'])
-        ->name('otp.generate');
-    
     Route::post('/otp/verify', [OtpController::class, 'verifyOtp'])
-        ->name('otp.verify');
+        ->name('verify.otp');
+
+    Route::post('/otp/resend', [OtpController::class, 'resendOtp'])
+        ->name('resend.otp');    
 
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 });

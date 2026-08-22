@@ -51,7 +51,7 @@ class OtpController extends Controller
         return to_route('dashboard')->with('success', 'Email Anda berhasil diverifikasi!');
     }
 
-    public function generateOtp(Request $request): RedirectResponse
+    public function resendOtp(Request $request): RedirectResponse
     {
         $user = $request->user();
 
