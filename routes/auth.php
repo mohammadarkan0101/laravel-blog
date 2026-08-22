@@ -68,5 +68,6 @@ Route::middleware('auth')->group(function () {
     Route::post('/otp/resend', [OtpController::class, 'resendOtp'])
         ->name('resend.otp');    
 
-    Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+    Route::post('/logout', [LoginController::class, 'logout'])
+        ->name('logout');
 });
