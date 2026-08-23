@@ -59,7 +59,7 @@ class OtpController extends Controller
 
         $user->markEmailAsVerified();
 
-        return to_route('dashboard')->with('success', 'Email Anda berhasil diverifikasi!');
+        return redirect()->intended(route('dashboard'));
     }
 
     public function resendOtp(Request $request): RedirectResponse
