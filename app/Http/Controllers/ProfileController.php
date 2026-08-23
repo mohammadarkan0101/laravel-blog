@@ -13,6 +13,7 @@ use Illuminate\Support\Str;
 use Illuminate\View\View;
 use Intervention\Image\Drivers\Gd\Driver;
 use Intervention\Image\ImageManager;
+use Intervention\Image\Format;
 
 class ProfileController extends Controller 
 {
