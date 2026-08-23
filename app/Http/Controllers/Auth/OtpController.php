@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\OtpCode;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -12,29 +13,41 @@ class OtpController extends Controller
 {
     public function verifyOtp(Request $request): RedirectResponse
     {
+        $user = $request->user();
+
+        if ($user->hasVerifiedEmail()) {
+            return redirect()->intended(route('dashboard'));
+        }
+
         $request->validate([
             'otp' => ['required', 'digits:6'],
         ]);
 
-        $user = $request->user();
-        
-        $throttleKey = 'verify-otp:' . $user->id;
+        $throttleKey = "verify-otp:{$user->id}|{$request->ip()}";
+
         if (RateLimiter::tooManyAttempts($throttleKey, 5)) {
             $seconds = RateLimiter::availableIn($throttleKey);
+
             return back()->withErrors([
-                'otp' => "Terlalu banyak percobaan salah. Silakan coba lagi dalam {$seconds} detik.",
+                'otp' => "Terlalu banyak percobaan. Silakan coba lagi dalam {$seconds} detik.",
             ]);
         }
 
-        if (! $user->otp_expires_at || now()->isAfter($user->otp_expires_at)) {
+        $otp = OtpCode::query()
+            ->where('user_id', $user->id)
+            ->where('is_used', false)
+            ->latest()
+            ->first();
+
+        if (! $otp || $otp->expires_at->isPast()) {
             return back()->withErrors([
-                'otp' => 'Kode OTP sudah kedaluwarsa. Silakan klik kirim ulang.',
+                'otp' => 'Kode OTP sudah kedaluwarsa. Silakan kirim ulang.',
             ]);
         }
 
-        if (! Hash::check($request->otp, $user->otp)) {
-            RateLimiter::hit($throttleKey, 60); 
-            
+        if (! Hash::check($request->otp, $otp->code)) {
+            RateLimiter::hit($throttleKey, 60);
+
             return back()->withErrors([
                 'otp' => 'Kode OTP yang Anda masukkan salah.',
             ]);
@@ -42,11 +55,9 @@ class OtpController extends Controller
 
         RateLimiter::clear($throttleKey);
 
+        $otp->update(['is_used' => true]);
+
         $user->markEmailAsVerified();
-        $user->forceFill([
-            'otp' => null,
-            'otp_expires_at' => null,
-        ])->save();
 
         return to_route('dashboard')->with('success', 'Email Anda berhasil diverifikasi!');
     }
@@ -55,7 +66,12 @@ class OtpController extends Controller
     {
         $user = $request->user();
 
-        $throttleKey = 'send-otp:' . $user->id;
+        if ($user->hasVerifiedEmail()) {
+            return redirect()->intended(route('dashboard'));
+        }
+
+        $throttleKey = "send-otp:{$user->id}|{$request->ip()}";
+
         if (RateLimiter::tooManyAttempts($throttleKey, 1)) {
             $seconds = RateLimiter::availableIn($throttleKey);
             return back()->with('message', "Tunggu {$seconds} detik sebelum meminta kode baru.");

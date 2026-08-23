@@ -18,8 +18,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Spatie\Permission\Traits\HasRoles;
 
-#[Fillable(['name', 'email', 'email_verified_at', 'password', 'phone', 'image', 'status', 'google_id', 'otp', 'otp_expires_at'])]
-#[Hidden(['password', 'remember_token', 'otp', 'otp_expires_at'])]
+#[Fillable(['name', 'email', 'email_verified_at', 'password', 'phone', 'image', 'status', 'google_id'])]
+#[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable implements MustVerifyEmail
 {
     use HasFactory, HasUuids, HasRoles, SoftDeletes, Notifiable;
@@ -28,7 +28,6 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return [
             'email_verified_at' => 'datetime',
-            'otp_expires_at' => 'datetime',
             'password' => 'hashed',
             'status' => 'boolean',
         ];
@@ -37,14 +36,14 @@ class User extends Authenticatable implements MustVerifyEmail
     protected function name(): Attribute
     {
         return Attribute::make(
-            set: fn (string $value) => Str::squish($value)
+            set: fn ($value) => Str::squish($value)
         );
     }
 
     protected function email(): Attribute
     {
         return Attribute::make(
-            set: fn (string $value) => strtolower(trim($value)),
+            set: fn ($value) => Str::lower(trim($value)),
         );
     }
     
@@ -70,24 +69,32 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function sendEmailVerificationNotification(): void
     {
+        $this->otpCodes()->where('is_used', false)->update(['is_used' => true]);
+    
         $otp = random_int(100000, 999999);
 
-        $this->forceFill([
-            'otp' => Hash::make($otp),
-            'otp_expires_at' => now()->addMinutes(10),
-        ])->save();
+        $this->otpCodes()->create([
+            'code'       => Hash::make($otp),
+            'expires_at' => now()->addMinutes(10),
+            'is_used'    => false,
+        ]);
 
         $this->notify(new CustomVerifyEmail($otp));
     }
 
-    public function scopeActive(Builder $query): void
+    public function scopeActive(Builder $query): Builder
     {
-        $query->where('status', true);
+        return $query->where('status', true);
     }
 
     public function isActive(): bool
     {
-        return $this->status;
+        return (bool) $this->status;
+    }
+
+    public function otpCodes(): HasMany
+    {
+        return $this->hasMany(OtpCode::class);
     }
 
     public function blogs(): HasMany

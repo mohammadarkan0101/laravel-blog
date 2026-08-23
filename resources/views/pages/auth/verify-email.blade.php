@@ -11,7 +11,7 @@
         <x-bootstrap.alert type="success" :message="session('status') == 'verification-link-sent' ? 'Kode OTP baru telah dikirim ke email Anda.' : session('message')" />
     @endif
 
-    <form action="{{ route('otp.verify') }}" method="POST" class="mb-4">
+    <form action="{{ route('verify.otp') }}" method="POST" class="mb-4">
         @csrf
 
         <input type="hidden" name="email" value="{{ auth()->user()?->email }}">
@@ -38,7 +38,7 @@
         Tidak menerima kode? Pastikan cek folder Spam.
     </p>
 
-    <form action="{{ route('otp.generate') }}" method="POST">
+    <form action="{{ route('resend.otp') }}" method="POST">
         @csrf
 
         <input type="hidden" name="email" value="{{ auth()->user()?->email }}">
