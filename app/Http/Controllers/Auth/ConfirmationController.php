@@ -33,6 +33,6 @@ class ConfirmationController extends Controller
 
         $request->session()->put('auth.password_confirmed_at', time());
 
-        return redirect()->intended(route('home', absolute: false));
+        return redirect()->intended(route('homepage', absolute: false));
     }
 }

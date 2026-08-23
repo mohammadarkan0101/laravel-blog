@@ -1,15 +1,15 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\UserController;
 use App\Http\Controllers\BlogController;
-use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\HomePageController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\Route;
 
 require __DIR__ . '/auth.php';
 
-Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/', [HomePageController::class, 'index'])->name('homepage');
 
 Route::middleware(['auth', 'verified'])->group(function () {
 

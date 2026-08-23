@@ -46,7 +46,7 @@ class LoginController extends Controller
         }
 
         if ($user->hasRole('user')) {
-            return redirect()->intended(route('home'));
+            return redirect()->intended(route('homepage'));
         }
 
         return to_route('login')->with('error', 'Role tidak dikenali.');

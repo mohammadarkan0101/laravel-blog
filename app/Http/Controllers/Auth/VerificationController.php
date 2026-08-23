@@ -14,14 +14,14 @@ class VerificationController extends Controller
     public function notice(Request $request): RedirectResponse|View
     {
         return $request->user()->hasVerifiedEmail()
-            ? redirect()->intended(route('home', absolute: false))
+            ? redirect()->intended(route('homepage', absolute: false))
             : view('pages.auth.verify-email');
     }
 
     public function store(Request $request): RedirectResponse
     {
         if ($request->user()->hasVerifiedEmail()) {
-            return redirect()->intended(route('home', absolute: false));
+            return redirect()->intended(route('homepage', absolute: false));
         }
 
         $request->user()->sendEmailVerificationNotification();
@@ -32,7 +32,7 @@ class VerificationController extends Controller
     public function verify(EmailVerificationRequest $request): RedirectResponse
     {
         if ($request->user()->hasVerifiedEmail()) {
-            return redirect()->intended(route('home', absolute: false).'?verified=1');
+            return redirect()->intended(route('homepage', absolute: false).'?verified=1');
         }
 
         if ($request->user()->markEmailAsVerified()) {
@@ -42,6 +42,6 @@ class VerificationController extends Controller
             event(new Verified($user));
         }
 
-        return redirect()->intended(route('home', absolute: false).'?verified=1');
+        return redirect()->intended(route('homepage', absolute: false).'?verified=1');
     }
 }
