@@ -30,25 +30,31 @@ class GoogleController extends Controller
 
             $user = User::where('email', $googleUser->email)->first();
 
-            if (! $user) {
-                if ($user->google_id) {
+            if ($user) {
+                if (! $user->google_id) {
                     $user->update([
                         'google_id' => $googleUser->id,
                     ]);
                 }
             } else {
                 $user = User::create([
-                    'google_id' => $googleUser->id,
-                    'name' => $googleUser->name,
-                    'email' => $googleUser->email,
+                    'google_id'         => $googleUser->id,
+                    'name'              => $googleUser->name,
+                    'email'             => $googleUser->email,
                     'email_verified_at' => now(),
-                    'password' => Hash::make(Str::password(8)),
+                    'password'          => Hash::make(Str::password(8)),
                 ]);
 
                 $user->assignRole('user');
             }
 
+            if (! $user->status) {
+                return to_route('login')->with('error', 'Akun Anda tidak aktif. Silakan hubungi admin.');
+            }
+
             Auth::login($user);
+
+            $request->session()->regenerate();
 
             return redirect()->intended(route('homepage'));
 
