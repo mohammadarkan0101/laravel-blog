@@ -24,16 +24,14 @@ class GoogleController extends Controller
         try {
             $googleUser = Socialite::driver('google')->user();
 
-            if (empty($googleUser->email)) {
+            if (! $googleUser->email) {
                 return to_route('login')->with('error', 'Email Google tidak ditemukan.');
             }
 
-            $user = User::query()
-                ->where('email', $googleUser->email)
-                ->first();
+            $user = User::where('email', $googleUser->email)->first();
 
-            if ($user) {
-                if (empty($user->google_id)) {
+            if (! $user) {
+                if ($user->google_id) {
                     $user->update([
                         'google_id' => $googleUser->id,
                     ]);
@@ -51,8 +49,6 @@ class GoogleController extends Controller
             }
 
             Auth::login($user);
-
-            $request->session()->regenerate();
 
             return redirect()->intended(route('homepage'));
 
