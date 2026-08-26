@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Notifications\CustomVerifyEmail;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
@@ -66,22 +65,7 @@ class User extends Authenticatable implements MustVerifyEmail
                 ->implode('')
         );
     }
-
-    public function sendEmailVerificationNotification(): void
-    {
-        $this->otpCodes()->where('is_used', false)->update(['is_used' => true]);
     
-        $otp = random_int(100000, 999999);
-
-        $this->otpCodes()->create([
-            'code'       => Hash::make($otp),
-            'expires_at' => now()->addMinutes(10),
-            'is_used'    => false,
-        ]);
-
-        $this->notify(new CustomVerifyEmail($otp));
-    }
-
     public function scopeActive(Builder $query): Builder
     {
         return $query->where('status', true);
