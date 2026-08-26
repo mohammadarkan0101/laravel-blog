@@ -7,6 +7,7 @@ use App\Http\Requests\StoreDataRegisterRequest;
 use App\Models\User;
 use App\Notifications\CustomVerifyEmail;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\View\View;
@@ -22,19 +23,24 @@ class RegistrationController extends Controller
     {
         $validated = $request->validated();
 
-        $user = User::create($validated);
+        $user = DB::transaction(function () use ($validated, &$otp) {
 
-        $user->assignRole('user');
+            $user = User::create($validated);
 
-        $user->otpCodes()->where('is_used', false)->update(['is_used' => true]);
+            $user->assignRole('user');
 
-        $otp = random_int(100000, 999999);
+            $user->otpCodes()->where('is_used', false)->update(['is_used' => true]);
 
-        $user->otpCodes()->create([
-            'code'       => Hash::make($otp),
-            'expires_at' => now()->addMinutes(10),
-            'is_used'    => false,
-        ]);
+            $otp = random_int(100000, 999999);
+
+            $user->otpCodes()->create([
+                'code'       => Hash::make($otp),
+                'expires_at' => now()->addMinutes(10),
+                'is_used'    => false,
+            ]);
+
+            return $user;
+    });
 
         $user->notify(new CustomVerifyEmail($otp));
 
