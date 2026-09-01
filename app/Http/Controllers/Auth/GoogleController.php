@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Laravel\Socialite\Facades\Socialite;
@@ -24,14 +23,14 @@ class GoogleController extends Controller
         try {
             $googleUser = Socialite::driver('google')->user();
 
-            if (! $googleUser->email) {
+            if (empty($googleUser->email)) {
                 return to_route('login')->with('error', 'Email Google tidak ditemukan.');
             }
 
             $user = User::where('email', $googleUser->email)->first();
 
             if ($user) {
-                if (! $user->google_id) {
+                if (empty($user->google_id)) {
                     $user->update([
                         'google_id' => $googleUser->id,
                     ]);
@@ -42,13 +41,13 @@ class GoogleController extends Controller
                     'name'              => $googleUser->name,
                     'email'             => $googleUser->email,
                     'email_verified_at' => now(),
-                    'password'          => Hash::make(Str::password(8)),
+                    'password'          => Str::password(8),
                 ]);
 
                 $user->assignRole('user');
             }
 
-            if (! $user->status) {
+            if ($user->status === false) {
                 return to_route('login')->with('error', 'Akun Anda tidak aktif. Silakan hubungi admin.');
             }
 
