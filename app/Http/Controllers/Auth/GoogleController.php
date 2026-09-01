@@ -56,7 +56,7 @@ class GoogleController extends Controller
 
             $request->session()->regenerate();
 
-            return redirect()->intended(route('homepage'));
+            return redirect()->intended(route('homepage', absolute: false));
 
         } catch (Throwable $e) {
             Log::error('Google login failed', [

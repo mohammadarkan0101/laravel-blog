@@ -18,7 +18,7 @@ class OtpController extends Controller
         $user = $request->user();
 
         if ($user->hasVerifiedEmail()) {
-            return redirect()->intended(route('dashboard'));
+            return redirect()->intended(route('homepage', absolute: false));
         }
 
         $request->validate([
@@ -60,7 +60,7 @@ class OtpController extends Controller
 
         RateLimiter::clear($throttleKey);
 
-        return redirect()->intended(route('dashboard'));
+        return redirect()->intended(route('homepage', absolute: false));
     }
 
     public function resendOtp(Request $request): RedirectResponse
@@ -68,7 +68,7 @@ class OtpController extends Controller
         $user = $request->user();
 
         if ($user->hasVerifiedEmail()) {
-            return redirect()->intended(route('dashboard'));
+            return redirect()->intended(route('homepage', absolute: false));
         }
 
         $throttleKey = "send-otp:{$user->id}|{$request->ip()}";

@@ -42,11 +42,11 @@ class LoginController extends Controller
     private function redirectUserByRole(User $user): RedirectResponse
     {
         if ($user->hasAnyRole(['administrator', 'editor'])) {
-            return redirect()->intended(route('dashboard'));
+            return redirect()->intended(route('dashboard', absolute: false));
         }
 
         if ($user->hasRole('user')) {
-            return redirect()->intended(route('homepage'));
+            return redirect()->intended(route('homepage', absolute: false));
         }
 
         return to_route('login')->with('error', 'Role tidak dikenali.');
