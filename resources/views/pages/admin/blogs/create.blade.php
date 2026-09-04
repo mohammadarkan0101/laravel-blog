@@ -1,6 +1,5 @@
 <x-layouts.app title="Tambah Blog">
 
-    <!-- CONTENT HEADER -->
     <div class="content-header">
         <div class="container-fluid">
             <div class="row">
@@ -21,7 +20,6 @@
         </div>
     </div>
 
-    <!-- CONTENT SECTION -->
     <section class="content">
         <div class="container-fluid">
             <div class="row">
@@ -45,7 +43,6 @@
                                      alt="Thumbnail"
                                 >
 
-                                <!-- JUDUL BLOG -->
                                 <div class="mb-3">
                                     <label for="title" class="form-label">Judul Blog</label>
                                     <input type="text" id="title" name="title" class="form-control @error('title') is-invalid @enderror" value="{{ old('title') }}" required>
@@ -54,7 +51,6 @@
                                     @enderror
                                 </div>
 
-                                <!-- KONTEN BLOG -->
                                 <div class="mb-3">
                                     <label for="content" class="form-label">Konten Blog</label>
                                     <textarea id="summernote" name="content" class="form-control @error('content') is-invalid @enderror" required>{{ old('content') }}</textarea>
@@ -63,7 +59,6 @@
                                     @enderror
                                 </div>
 
-                                <!-- THUMBNAIL -->
                                 <div class="mb-3">
                                     <label for="image" class="form-label">Thumbnail</label>
                                     <div class="custom-file">
@@ -75,7 +70,6 @@
                                     </div>
                                 </div>
 
-                                <!-- STATUS BLOG -->
                                 <div class="mb-3">
                                     <label for="status" class="form-label">Status Blog</label>
                                     <select id="status" name="status" class="form-control @error('status') is-invalid @enderror" required>
@@ -123,7 +117,7 @@
 
                 if (!inputImage || !previewImage) return;
 
-               let pr eviewUrl = null;
+                let previewUrl = null;
 
                 function clearPreview() {
                     if (previewUrl) {

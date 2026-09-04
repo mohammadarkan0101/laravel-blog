@@ -1,6 +1,5 @@
 <x-layouts.app title="Profile">
 
-    <!-- CONTENT HEADER -->
     <div class="content-header">
         <div class="container-fluid">
             <div class="row">
@@ -21,18 +20,15 @@
         </div>
     </div>
 
-    <!-- CONTENT SECTION -->
     <section class="content">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-12">
-
-                    <!-- FLASH MESSAGES -->
+                    
                     @if (session('success'))
                         <x-bootstrap.alert type="success" :message="session('success')" />
                     @endif
 
-                    <!-- UPDATE PROFILE -->
                     <div class="card">
                         <div class="card-body">
 
@@ -50,7 +46,6 @@
                                 @csrf
                                 @method('PATCH')
 
-                                <!-- PREVIEW IMAGE -->
                                 <img
                                     id="previewImage"
                                     src="{{ $user->image ? asset('storage/users/' . $user->image) : asset('assets/img/default-profile.webp') }}"
@@ -59,10 +54,8 @@
                                     class="img-fluid img-thumbnail img-user mb-3"
                                 >
 
-                                <!-- INPUT FILE IMAGE -->
                                 <input type="file" id="image" name="image" class="d-none" accept=".png,.jpg,.jpeg">
 
-                                <!-- INPUT REMOVE IMAGE -->
                                 <input type="hidden" id="removeImage" name="removeImage" value="0">
 
                                 @error('image')
@@ -79,7 +72,6 @@
                                     </button>
                                 </div>
 
-                                <!-- NAMA LENGKAP -->
                                 <div class="mb-3">
                                     <label for="name" class="form-label">Nama Lengkap</label>
                                     <input type="text" id="name" name="name" class="form-control @error('name') is-invalid @enderror" value="{{ $user->name }}" required>
@@ -88,7 +80,6 @@
                                     @enderror
                                 </div>
 
-                                <!-- ALAMAT EMAIL -->
                                 <div class="mb-3">
                                     <label for="email" class="form-label mb-0">Alamat Email</label>
                                     <small class="text-muted d-block mb-1" style="font-size: 0.9rem;">
@@ -100,7 +91,6 @@
                                     @enderror
                                 </div>
 
-                                <!-- NOMOR TELEPON -->
                                 <div class="mb-3">
                                     <label for="phone" class="form-label">Nomor Telepon</label>
                                     <input type="text" id="phone" name="phone" class="form-control @error('phone') is-invalid @enderror" value="{{ $user->phone }}" required>
@@ -109,7 +99,6 @@
                                     @enderror
                                 </div>
 
-                                <!-- ROLE USER -->
                                 <div class="mb-3">
                                     <label for="role" class="form-label">Role User</label>
                                     <input type="text" id="role" name="role" class="form-control" value="{{ $user->role_names }}" readonly>
@@ -128,7 +117,6 @@
                     </div>
                 </div>
 
-                <!-- UPDATE PASSWORD -->
                 <div class="col-md-12">
                     <div class="card mb-4">
                         <div class="card-body">
@@ -147,7 +135,6 @@
                                 @csrf
                                 @method('PATCH')
 
-                                <!-- PASSWORD LAMA -->
                                 <div class="mb-3">
                                     <label for="old_password" class="form-label">Password Lama</label>
                                     <input type="password" id="old_password" name="old_password" class="form-control @error('old_password') is-invalid @enderror" required>
@@ -156,7 +143,6 @@
                                     @enderror
                                 </div>
 
-                                <!-- PASSWORD BARU -->
                                 <div class="mb-3">
                                     <label for="password" class="form-label">Password Baru</label>
                                     <input type="password" id="password" name="password" class="form-control @error('password') is-invalid @enderror" required>
@@ -165,7 +151,6 @@
                                     @enderror
                                 </div>
 
-                                <!-- KONFIRMASI PASSWORD -->
                                 <div class="mb-3">
                                     <label for="password_confirmation" class="form-label">Konfirmasi Password</label>
                                     <input type="password" id="password_confirmation" name="password_confirmation" class="form-control @error('password_confirmation') is-invalid @enderror" required>
@@ -223,18 +208,18 @@
 
                 btnRemove.addEventListener("click", function () {
                     clearPreview();
-                    preview.src = preview.dataset.default;
                     imageInput.value = "";
+                    preview.src = preview.dataset.default;
                     removeInput.value = "1";
                 });
 
                 form.addEventListener("reset", function () {
                     setTimeout(() => {
                         clearPreview();
-                        preview.src = preview.dataset.original;
                         imageInput.value = "";
+                        preview.src = preview.dataset.original;
                         removeInput.value = "0";
-                    });
+                    }, 0);
                 });
             });
         </script>

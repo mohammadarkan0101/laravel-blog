@@ -1,6 +1,5 @@
 <x-layouts.app title="Edit Blog">
 
-    <!-- CONTENT HEADER -->
     <div class="content-header">
         <div class="container-fluid">
             <div class="row">
@@ -21,7 +20,6 @@
         </div>
     </div>
 
-    <!-- CONTENT SECTION -->
     <section class="content">
         <div class="container-fluid">
             <div class="row">
@@ -46,7 +44,6 @@
                                      alt="Thumbnail"
                                 >
 
-                                <!-- JUDUL BLOG -->
                                 <div class="mb-3">
                                     <label for="title" class="form-label">Judul Blog</label>
                                     <input type="text" id="title" name="title" class="form-control @error('title') is-invalid @enderror" value="{{ old('title', $blog->title) }}" required>
@@ -55,7 +52,6 @@
                                     @enderror
                                 </div>
 
-                                <!-- KONTEN BLOG -->
                                 <div class="mb-3">
                                     <label for="content" class="form-label">Konten Blog</label>
                                     <textarea id="summernote" name="content" class="form-control @error('content') is-invalid @enderror" required>{{ old('content', $blog->content) }}</textarea>
@@ -64,7 +60,6 @@
                                     @enderror
                                 </div>
 
-                                <!-- THUMBNAIL -->
                                 <div class="mb-3">
                                     <label for="image" class="form-label">Thumbnail</label>
                                     <div class="custom-file">
@@ -76,7 +71,6 @@
                                     </div>
                                 </div>
 
-                                <!-- STATUS BLOG -->
                                 <div class="mb-3">
                                     <label for="status" class="form-label">Status Blog</label>
                                     <select id="status" name="status" class="form-control @error('status') is-invalid @enderror" required>
@@ -93,13 +87,11 @@
                                     @enderror
                                 </div>
 
-                                <!-- TANGGAL DIBUAT -->
                                 <div class="mb-3">
                                     <label for="created_at" class="form-label">Tanggal Dibuat</label>
                                     <input type="text" id="created_at" name="created_at" class="form-control" value="{{ $blog->created_at }}" readonly>
                                 </div>
 
-                                <!-- TANGGAL RILIS -->
                                 <div class="mb-3">
                                     <label for="published_at" class="form-label">Tanggal Rilis</label>
                                     <input type="text" id="published_at" name="published_at" class="form-control" value="{{ $blog->published_at }}" readonly>

@@ -1,6 +1,5 @@
 <x-layouts.app title="Data Users">
 
-    <!-- CONTENT HEADER -->
     <div class="content-header">
         <div class="container-fluid">
             <div class="row">
@@ -16,18 +15,15 @@
         </div>
     </div>
 
-    <!-- CONTENT SECTION -->
     <section class="content">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-12">
 
-                    <!-- FLASH MESSAGES -->
                     @if (session('success'))
                         <x-bootstrap.alert type="success" :message="session('success')" />
                     @endif
 
-                    <!-- DATATABLE -->
                     <div class="card">
                         <div class="card-body">
                             <div class="table-responsive">

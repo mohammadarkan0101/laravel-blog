@@ -1,6 +1,5 @@
 <x-layouts.app title="Tambah Akun">
 
-    <!-- CONTENT HEADER -->
     <div class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
@@ -21,7 +20,6 @@
         </div>
     </div>
 
-    <!-- CONTENT SECTION -->
     <section class="content">
         <div class="container-fluid">
             <div class="row">
@@ -32,7 +30,6 @@
                             <form action="{{ route('users.store') }}" method="POST">
                                 @csrf
 
-                                <!-- NAMA LENGKAP -->
                                 <div class="mb-3">
                                     <label for="name" class="form-label">Nama Lengkap</label>
                                     <input type="text" id="name" name="name" class="form-control @error('name') is-invalid @enderror" value="{{ old('name') }}" required>
@@ -41,7 +38,6 @@
                                     @enderror
                                 </div>
 
-                                <!-- ALAMAT EMAIL -->
                                 <div class="mb-3">
                                     <label for="email" class="form-label">Alamat Email</label>
                                     <input type="email" id="email" name="email" class="form-control @error('email') is-invalid @enderror" value="{{ old('email') }}" required>
@@ -50,7 +46,6 @@
                                     @enderror
                                 </div>
 
-                                <!-- NOMOR TELEPON -->
                                 <div class="mb-3">
                                     <label for="phone" class="form-label">Nomor Telepon</label>
                                     <input type="tel" id="phone" name="phone" class="form-control @error('phone') is-invalid @enderror" value="{{ old('phone') }}" required>
@@ -59,7 +54,6 @@
                                     @enderror
                                 </div>
 
-                                <!-- PASSWORD -->
                                 <div class="mb-3">
                                     <label for="password" class="form-label">Password</label>
                                     <input type="password" id="password" name="password" class="form-control @error('password') is-invalid @enderror" required>
@@ -68,7 +62,6 @@
                                     @enderror
                                 </div>
 
-                                <!-- KONFIRMASI PASSWORD -->
                                 <div class="mb-3">
                                     <label for="password_confirmation" class="form-label">Konfirmasi Password</label>
                                     <input type="password" id="password_confirmation" name="password_confirmation" class="form-control @error('password_confirmation') is-invalid @enderror" required>
@@ -77,7 +70,6 @@
                                     @enderror
                                 </div>
 
-                                <!-- ROLE USER -->
                                 <div class="mb-3">
                                     <label for="role" class="form-label">Role User</label>
                                     <select id="role" name="role" class="form-control @error('role') is-invalid @enderror" required>
