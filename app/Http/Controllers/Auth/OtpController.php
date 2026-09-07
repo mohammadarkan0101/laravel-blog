@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\OtpCode;
+use App\Notifications\CustomVerifyEmail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -77,7 +78,20 @@ class OtpController extends Controller
 
         RateLimiter::hit($throttleKey, 60);
 
-        $user->sendEmailVerificationNotification();
+        $otp = random_int(100000, 999999);
+
+        DB::transaction(function () use ($user, $otp) {
+
+            $user->otpCodes()->where('is_used', false)->update(['is_used' => true]);
+
+            $user->otpCodes()->create([
+                'code'       => Hash::make((string) $otp),
+                'expires_at' => now()->addMinutes(10),
+                'is_used'    => false,
+            ]);
+        });
+
+        $user->notify(new CustomVerifyEmail($otp));
 
         return back()->with('message', 'Kode OTP baru berhasil dikirim ke email Anda.');
     }

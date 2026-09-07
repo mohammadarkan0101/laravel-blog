@@ -40,7 +40,7 @@ class RegistrationController extends Controller
             ]);
 
             return $user;
-    });
+        });
 
         $user->notify(new CustomVerifyEmail($otp));
 
