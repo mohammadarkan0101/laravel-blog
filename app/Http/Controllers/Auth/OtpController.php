@@ -28,9 +28,7 @@ class OtpController extends Controller
         $throttleKey = "verify-otp:{$user->id}|{$request->ip()}";
 
         if (RateLimiter::tooManyAttempts($throttleKey, 5)) {
-
             $seconds = RateLimiter::availableIn($throttleKey);
-
             throw ValidationException::withMessages([
                 'otp' => "Terlalu banyak percobaan. Silakan coba lagi dalam {$seconds} detik.",
             ]);
@@ -43,12 +41,9 @@ class OtpController extends Controller
             ->first();
 
         if (! $otp || $otp->expires_at->isPast() || ! Hash::check($request->otp, $otp->code)) {
-
             RateLimiter::hit($throttleKey, 60);
-
             $attemptsLeft = RateLimiter::remaining($throttleKey, 5);
-
-            return back()->withErrors([
+            throw ValidationException::withMessages([
                 'otp' => "Kode OTP salah atau sudah kedaluwarsa. Sisa percobaan: {$attemptsLeft}.",
             ]);
         }
@@ -74,9 +69,7 @@ class OtpController extends Controller
         $throttleKey = "send-otp:{$user->id}|{$request->ip()}";
 
         if (RateLimiter::tooManyAttempts($throttleKey, 1)) {
-            
             $seconds = RateLimiter::availableIn($throttleKey);
-            
             return back()->withErrors([
                 'resend' => "Tunggu {$seconds} detik sebelum meminta kode baru.",
             ]);

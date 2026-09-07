@@ -23,6 +23,8 @@ class RegistrationController extends Controller
     {
         $validated = $request->validated();
 
+        $otp = random_int(100000, 999999);
+
         $user = DB::transaction(function () use ($validated, &$otp) {
 
             $user = User::create($validated);
@@ -30,8 +32,6 @@ class RegistrationController extends Controller
             $user->assignRole('user');
 
             $user->otpCodes()->where('is_used', false)->update(['is_used' => true]);
-
-            $otp = random_int(100000, 999999);
 
             $user->otpCodes()->create([
                 'code'       => Hash::make($otp),
